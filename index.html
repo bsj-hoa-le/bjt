@@ -3,194 +3,275 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ôn tập BJT</title>
+<title>Luyện tập BJT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f7fb; --card:#ffffff; --ink:#16224a; --ink-2:#4a5578; --muted:#7a839e;
-  --line:#c9cedd; --line-2:#e3e6ef; --accent:#c0442a; --accent-ink:#fff;
-  --ok:#1f8a4c; --ok-bg:#e6f5ec; --bad:#c8352b; --bad-bg:#fdecea; --sel-bg:#eef1fa;
-  --shadow:0 6px 24px rgba(22,34,74,.07);
+  --bg:#f7f5f0; --card:#ffffff; --ink:#1d2b2a; --ink-2:#4b5a58; --muted:#87928f;
+  --line:#d9d4c7; --line-2:#ebe7dc; --accent:#0e7c6b; --accent-ink:#ffffff; --accent-soft:#e3f1ee;
+  --hl:#f3c94f; --ok:#178a53; --ok-bg:#e5f4ea; --bad:#c43d2f; --bad-bg:#fbeae7;
+  --shadow:0 1px 2px rgba(29,43,42,.06),0 8px 28px rgba(29,43,42,.06);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#11152a; --card:#1a2038; --ink:#e7eaf6; --ink-2:#b8bfd9; --muted:#8a93b3;
-    --line:#3a4364; --line-2:#2a3150; --accent:#e0664a; --accent-ink:#fff;
-    --ok:#4cc27e; --ok-bg:#163527; --bad:#f07468; --bad-bg:#3a1d1f; --sel-bg:#242c4c;
-    --shadow:0 6px 24px rgba(0,0,0,.35);
+    --bg:#141a19; --card:#1c2423; --ink:#e8eeec; --ink-2:#b4c0bd; --muted:#84918e;
+    --line:#33403e; --line-2:#263130; --accent:#3fb5a0; --accent-ink:#0d1716; --accent-soft:#1f3a35;
+    --hl:#d9b13f; --ok:#4cc27e; --ok-bg:#183326; --bad:#f07468; --bad-bg:#3a1f1d;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.3);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#11152a; --card:#1a2038; --ink:#e7eaf6; --ink-2:#b8bfd9; --muted:#8a93b3;
-  --line:#3a4364; --line-2:#2a3150; --accent:#e0664a; --accent-ink:#fff;
-  --ok:#4cc27e; --ok-bg:#163527; --bad:#f07468; --bad-bg:#3a1d1f; --sel-bg:#242c4c;
-  --shadow:0 6px 24px rgba(0,0,0,.35);
+  --bg:#141a19; --card:#1c2423; --ink:#e8eeec; --ink-2:#b4c0bd; --muted:#84918e;
+  --line:#33403e; --line-2:#263130; --accent:#3fb5a0; --accent-ink:#0d1716; --accent-soft:#1f3a35;
+  --hl:#d9b13f; --ok:#4cc27e; --ok-bg:#183326; --bad:#f07468; --bad-bg:#3a1f1d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.3);
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro","Noto Sans JP",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro","Noto Sans JP",system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-weight:400}
 .jp{font-family:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif}
 button{font:inherit;color:inherit;cursor:pointer}
 .hidden{display:none!important}
 
-/* top bar */
-.top{display:flex;align-items:center;gap:14px;padding:18px 24px}
-.back{background:none;border:0;padding:6px;border-radius:8px;display:flex}
-.back:hover{background:var(--line-2)}
-.top h1{font-size:26px;font-weight:700;margin:0;letter-spacing:-.01em}
-.badge{background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:15px;padding:3px 12px;border-radius:999px}
+/* header */
+.top{display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line-2);background:var(--bg);position:sticky;top:0;z-index:5}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:"Noto Sans JP",sans-serif;font-weight:700;font-size:19px;text-decoration:none;flex:0 0 auto}
+.crumb{display:flex;flex-direction:column;min-width:0}
+.crumb small{font-size:11.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.crumb h1{font-size:17px;font-weight:600;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .top .spacer{flex:1}
-.iconbtn{background:none;border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:13px;color:var(--ink-2)}
+.back{background:none;border:1px solid var(--line);border-radius:9px;padding:6px 12px;font-size:13.5px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.back:hover{border-color:var(--ink-2)}
+.iconbtn{background:none;border:1px solid var(--line);border-radius:9px;padding:6px 10px;font-size:13px;color:var(--ink-2)}
 
-.wrap{max-width:1200px;margin:0 auto;padding:0 16px 140px}
-.col{max-width:840px;margin:0 auto}
+.wrap{max-width:1120px;margin:0 auto;padding:24px 16px 80px}
+.col{max-width:820px;margin:0 auto}
 
 /* setup */
-.panel{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:24px;margin-bottom:18px}
-.panel h2{font-size:17px;margin:0 0 4px}
-.panel .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px}
-.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
-.lchip{border:1.5px solid var(--line);background:none;border-radius:12px;padding:8px 4px 6px;text-align:center;position:relative}
-.lchip b{display:block;font-size:15px}
-.lchip small{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
-.lchip .bar{height:3px;border-radius:2px;background:var(--line-2);margin:5px 6px 0;overflow:hidden}
-.lchip .bar i{display:block;height:100%;background:var(--ok)}
-.lchip.on{border-color:var(--ink);background:var(--sel-bg)}
+.panel{background:var(--card);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:16px}
+.panel h2{font-size:15px;margin:0 0 4px;font-weight:600;display:flex;align-items:center;gap:8px}
+.panel h2::before{content:"";width:6px;height:16px;border-radius:2px;background:var(--accent)}
+.panel .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px}
+.lessons.wide{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.lchip{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:7px 4px 6px;text-align:center}
+.lchip b{display:block;font-size:14px;font-weight:600}
+.lchip small{display:block;font-size:10.5px;color:var(--muted);margin-top:1px}
+.lchip .bar{height:3px;border-radius:2px;background:var(--line-2);margin:5px 4px 0;overflow:hidden}
+.lchip .bar i{display:block;height:100%;background:var(--accent)}
+.lchip.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.pill{border:1.5px solid var(--line);background:none;border-radius:999px;padding:7px 14px;font-size:14px}
-.pill.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
-.mini{border:0;background:none;color:var(--ink-2);text-decoration:underline;font-size:13px;padding:4px}
-.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.tcard{border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:none;text-align:left}
-.tcard.on{border-color:var(--ink);background:var(--sel-bg)}
-.tcard b{display:block;font-size:14.5px}
-.tcard span{font-size:12.5px;color:var(--muted)}
+.pill{border:1px solid var(--line);background:none;border-radius:8px;padding:7px 14px;font-size:13.5px}
+.pill.on{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.mini{border:0;background:none;color:var(--accent);font-size:13px;padding:4px 6px;font-weight:500}
+.mini:hover{text-decoration:underline}
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px}
+.tcard{border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:none;text-align:left;position:relative;padding-left:38px}
+.tcard::before{content:"";position:absolute;left:13px;top:13px;width:15px;height:15px;border-radius:4px;border:1.5px solid var(--line)}
+.tcard.on{border-color:var(--accent);background:var(--accent-soft)}
+.tcard.on::before{background:var(--accent);border-color:var(--accent);box-shadow:inset 0 0 0 3px var(--card)}
+.tcard b{display:block;font-size:14px;font-weight:600}
+.tcard span{font-size:12px;color:var(--muted)}
 .start{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-.btn{border:0;border-radius:999px;padding:14px 34px;font-weight:700;font-size:17px;background:var(--ink);color:var(--bg)}
+.btn{border:0;border-radius:10px;padding:12px 26px;font-weight:600;font-size:15.5px;background:var(--accent);color:var(--accent-ink)}
+.btn:hover:not(:disabled){filter:brightness(1.07)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink)}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--ink)}
 .stat{color:var(--ink-2);font-size:14px}
 .stat b{color:var(--ink)}
 .toggle{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2)}
+.toggle input{accent-color:var(--accent)}
 
-/* quiz */
-.nav{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 10px;scrollbar-width:thin}
-.dot{flex:0 0 auto;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--ink-2);background:none;font-weight:600;font-size:17px}
-.dot.cur{border-width:3.5px;border-color:var(--ink)}
-.dot.ans{background:var(--sel-bg)}
-.dot.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
-.dot.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
-.dot.cur.ok{border-color:var(--ok)} .dot.cur.bad{border-color:var(--bad)}
-.qhead{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
-.qhead .qn{font-size:21px;font-weight:700}
-.timer{display:flex;align-items:center;gap:6px;font-weight:600;font-size:20px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.qtype{color:var(--muted);font-size:14.5px;margin:8px 0 14px;letter-spacing:.02em}
-.qcard{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:22px 28px 26px}
-.qcard .ask{font-weight:600;color:var(--ink-2);font-size:15.5px;margin-bottom:12px}
-.sent{font-size:25px;line-height:1.75}
-.sent u{text-decoration-thickness:2.5px;text-underline-offset:5px;font-weight:700}
-.blank{display:inline-block;min-width:4.2em;border-bottom:2.5px solid var(--ink);margin:0 .2em;text-align:center}
+/* quiz: sidebar + main */
+.quiz-layout{display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:start}
+.side{position:sticky;top:86px;background:var(--card);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:18px}
+.side .pos{font-size:13px;color:var(--muted)}
+.side .pos b{font-size:26px;color:var(--ink);font-weight:600;margin-right:2px}
+.seg{display:flex;gap:3px;margin:10px 0 14px}
+.seg i{flex:1;height:6px;border-radius:2px;background:var(--line-2)}
+.seg i.ans{background:var(--ink-2)} .seg i.ok{background:var(--ok)} .seg i.bad{background:var(--bad)}
+.seg i.cur{outline:2px solid var(--accent);outline-offset:1px}
+.metrics{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:6px;margin-bottom:14px}
+.metric{background:var(--bg);border-radius:8px;padding:7px 8px;text-align:center}
+.metric span{display:block;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+.metric b{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.metric.ok b{color:var(--ok)} .metric.bad b{color:var(--bad)}
+.side details summary{font-size:12.5px;color:var(--ink-2);cursor:pointer;margin-bottom:8px;list-style:none}
+.side details summary::before{content:"▸ "} .side details[open] summary::before{content:"▾ "}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:14px}
+.sq{aspect-ratio:1;border-radius:6px;border:1px solid var(--line);background:none;font-size:12.5px;font-weight:500;color:var(--ink-2);padding:0}
+.sq.cur{border:2px solid var(--accent);color:var(--ink)}
+.sq.ans{background:var(--line-2)}
+.sq.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.sq.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.side .btn{width:100%;padding:10px}
+
+.qcard{background:var(--card);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:20px 26px 24px;position:relative;overflow:hidden}
+.qcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+.qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.chip{background:var(--accent-soft);color:var(--accent);font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:6px}
+.qno{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.qcard .ask{font-size:14.5px;color:var(--ink-2);margin-bottom:12px}
+.sent{font-size:24px;line-height:1.8}
+.sent u{text-decoration:none;background:linear-gradient(transparent 62%,var(--hl) 62%);padding:0 2px;font-weight:700}
+.sent.sub{font-size:17px;margin-top:10px;color:var(--ink-2)}
+.blank{display:inline-block;min-width:4.2em;border-bottom:2px dashed var(--accent);margin:0 .2em;background:var(--accent-soft);border-radius:4px 4px 0 0}
 .bigword{font-size:40px;font-weight:700;letter-spacing:.02em}
-.bigvi{font-size:22px;font-weight:600;line-height:1.5}
-.hint{color:var(--muted);font-size:14px;margin-top:6px}
-.speak{border:1px solid var(--line);background:none;border-radius:999px;padding:4px 10px;font-size:12.5px;color:var(--ink-2);margin-left:8px;vertical-align:middle}
-.opts{display:flex;flex-direction:column;gap:14px;margin-top:22px}
-.opt{display:flex;align-items:center;gap:22px;border:1.5px solid var(--ink-2);border-radius:16px;background:var(--card);padding:18px 24px;text-align:left;min-height:84px;transition:background .12s,border-color .12s}
-.opt:hover:not(:disabled){background:var(--sel-bg)}
-.opt .n{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--ink-2);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px}
-.opt .t{font-size:24px;line-height:1.4}
-.opt .t.vi{font-size:18px;font-family:"Be Vietnam Pro",sans-serif}
-.opt.sel{border-color:var(--ink);border-width:2.5px;background:var(--sel-bg)}
-.opt.sel .n{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.opt.ok{border-color:var(--ok);border-width:2.5px;background:var(--ok-bg)}
-.opt.ok .n{background:var(--ok);border-color:var(--ok);color:#fff}
-.opt.bad{border-color:var(--bad);border-width:2.5px;background:var(--bad-bg)}
-.opt.bad .n{background:var(--bad);border-color:var(--bad);color:#fff}
+.bigword u{text-decoration:none;background:linear-gradient(transparent 62%,var(--hl) 62%);padding:0 4px}
+.bigvi{font-size:21px;font-weight:600;line-height:1.5}
+.hint{color:var(--muted);font-size:13.5px;margin-top:6px}
+.speak{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--ink-2);margin-left:6px;vertical-align:middle}
+.speak:hover{border-color:var(--accent)}
+
+.opts{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
+.opts.grid2{grid-template-columns:1fr 1fr}
+.opt{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:14px 16px;text-align:left;min-height:62px;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.opt .n{flex:0 0 auto;width:30px;height:30px;border-radius:7px;background:var(--line-2);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;color:var(--ink-2)}
+.opt .t{font-size:21px;line-height:1.4}
+.opt .t.vi{font-size:16px;font-family:"Be Vietnam Pro",sans-serif}
+.opt .t.long{font-size:16.5px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel .n{background:var(--accent);color:var(--accent-ink)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.ok .n{background:var(--ok);color:#fff}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt.bad .n{background:var(--bad);color:#fff}
 .opt:disabled{cursor:default}
-.explain{margin-top:18px;background:var(--card);border-radius:18px;border-left:5px solid var(--ok);padding:16px 22px;box-shadow:var(--shadow)}
-.explain.wrong{border-left-color:var(--bad)}
-.explain .w{font-size:22px;font-weight:700}
-.explain .w small{font-size:15px;font-weight:500;color:var(--ink-2);margin-left:8px}
-.explain .m{margin:6px 0 2px;font-size:15.5px;line-height:1.55}
+
+.explain{margin-top:14px;background:var(--card);border:1px solid var(--line-2);border-radius:12px;padding:14px 18px}
+.explain .verdict{font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ok)}
+.explain.wrong .verdict{color:var(--bad)}
+.explain .w{font-size:21px;font-weight:700}
+.explain .w small{font-size:14.5px;font-weight:500;color:var(--ink-2);margin-left:8px}
+.explain .m{margin:6px 0 2px;font-size:15px;line-height:1.55}
 .explain .en{color:var(--muted);font-size:13px}
 .explain .ex{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
-.explain .ex .j{font-size:17px;line-height:1.6}
-.explain .ex .v{font-size:14px;color:var(--ink-2);line-height:1.5}
+.explain .ex .j{font-size:16.5px;line-height:1.6}
+.explain .ex .v{font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.explain s, .sent s{text-decoration-color:var(--bad);text-decoration-thickness:2px}
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px}
+.linkbtn{background:none;border:0;color:var(--ink-2);font-size:14px;padding:8px 4px}
+.linkbtn:disabled{opacity:.35;cursor:default}
+.kbd{font-size:12px;color:var(--muted)}
 
-.bottom{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;pointer-events:none}
-.bottom .in{pointer-events:auto;width:100%;max-width:872px;background:var(--bg);padding:14px 16px 18px;display:flex;gap:18px;align-items:center;box-shadow:0 -8px 24px rgba(22,34,74,.06)}
-.bottom .in .btn{flex:1;padding:15px}
-.bottom .cnt{font-size:22px;font-weight:600;min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+/* grammar dialog */
+.ctx{color:var(--muted);font-size:13.5px;margin-bottom:8px}
+.dlg{display:flex;flex-direction:column;gap:12px}
+.ln{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.ln .spk{width:26px;height:26px;border-radius:6px;background:var(--line-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12.5px;margin-top:5px}
+.ln .jp{font-size:19px;line-height:1.75}
+.ln .tr{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin-top:2px}
+.explain .ln .jp{font-size:16.5px}
+mark{background:linear-gradient(transparent 62%,var(--hl) 62%);color:inherit;font-weight:700;padding:0 2px}
+
+/* keigo table */
+.kt{border-collapse:collapse;width:100%;margin-top:10px;font-size:15.5px}
+.kt th{text-align:left;font-weight:600;color:var(--ink-2);padding:8px 12px 8px 0;width:118px;vertical-align:top;font-size:13.5px}
+.kt th small{font-weight:400;color:var(--muted)}
+.kt td{padding:8px 0;border-top:1px solid var(--line-2);line-height:1.9}
+.kt tr:first-child td{border-top:0}
 
 /* results */
-.score{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
-.ring{width:130px;height:130px}
-.score h2{font-size:28px;margin:0}
-.score p{margin:6px 0 0;color:var(--ink-2)}
-.rlist{display:flex;flex-direction:column;gap:10px}
-.ritem{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;border:1px solid var(--line-2);border-radius:14px;padding:12px 14px}
-.ritem .mk{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+.score{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+.bignum{font-size:54px;font-weight:700;line-height:1;color:var(--accent)}
+.bignum small{font-size:22px;color:var(--muted);font-weight:500}
+.score h2::before{display:none}
+.score h2{font-size:22px;margin:0}
+.score p{margin:6px 0 0;color:var(--ink-2);font-size:14px}
+.scorebar{height:8px;border-radius:4px;background:var(--line-2);overflow:hidden;margin-top:10px;width:260px;max-width:100%}
+.scorebar i{display:block;height:100%;background:var(--accent)}
+.rlist{display:flex;flex-direction:column;gap:8px}
+.ritem{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;border:1px solid var(--line-2);border-radius:10px;padding:11px 14px;cursor:pointer}
+.ritem:hover{border-color:var(--line)}
+.ritem .mk{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:13px}
 .ritem .mk.ok{background:var(--ok)} .ritem .mk.bad{background:var(--bad)}
-.ritem .w{font-size:19px;font-weight:700}
-.ritem .w small{font-weight:500;color:var(--ink-2);font-size:14px;margin-left:6px}
-.ritem .m{font-size:14px;color:var(--ink-2);margin-top:2px}
-.ritem .yours{font-size:13px;color:var(--bad);margin-top:4px}
-.filters{display:flex;gap:8px;margin-bottom:12px}
+.ritem .w{font-size:18px;font-weight:600}
+.ritem .w small{font-weight:400;color:var(--ink-2);font-size:13.5px;margin-left:6px}
+.ritem .m{font-size:13.5px;color:var(--ink-2);margin-top:2px}
+.ritem .yours{font-size:12.5px;color:var(--bad);margin-top:4px}
+.filters{display:flex;gap:6px;margin-bottom:12px}
 
+@media (max-width:860px){
+  .quiz-layout{grid-template-columns:1fr;gap:12px}
+  /* compact tracker: position + metrics on one line, question numbers in one swipeable row */
+  .side{position:static;padding:10px 12px;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px 10px}
+  .side .pos b{font-size:19px}
+  .seg{display:none}
+  .metrics{display:flex;justify-content:flex-end;gap:5px;margin:0}
+  .metric{display:flex;align-items:baseline;gap:5px;padding:4px 8px}
+  .metric span{display:none}
+  .metric b{font-size:13px}
+  .metric:first-child b::before{content:"⏱ ";font-weight:400}
+  .metric.ok b::before{content:"✓ "} .metric.bad b::before{content:"✗ "}
+  #navBox{grid-column:1/-1}
+  .side details summary{display:none}
+  .nav{display:flex;overflow-x:auto;gap:5px;margin:0;padding:2px 1px 8px;scrollbar-width:thin;scrollbar-color:var(--line) transparent;cursor:grab;user-select:none}
+  .nav.dragging{cursor:grabbing}
+  .nav::-webkit-scrollbar{height:4px} .nav::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+  .sq{flex:0 0 30px;height:30px;aspect-ratio:auto;font-size:12px}
+  .side .btn{display:none}
+}
 @media (max-width:640px){
-  .top{padding:14px 16px}
-  .top h1{font-size:20px}
-  .dot{width:42px;height:42px;font-size:15px}
-  .qcard{padding:18px 18px 20px}
-  .sent{font-size:20px}
-  .bigword{font-size:32px}
-  .opt{padding:14px 16px;gap:14px;min-height:64px}
-  .opt .n{width:36px;height:36px;font-size:15px}
-  .opt .t{font-size:20px}
-  .opt .t.vi{font-size:16px}
-  .bottom .in .btn{padding:13px;font-size:15px}
-  .bottom .cnt{font-size:17px;min-width:50px}
+  .top{padding:10px 14px}
+  .wrap{padding:16px 12px 60px}
+  .qcard{padding:16px 16px 18px}
+  .sent{font-size:19px}
+  .bigword{font-size:30px}
+  .opts.grid2{grid-template-columns:1fr}
+  .opt{padding:12px;min-height:54px}
+  .opt .t{font-size:18px}
+  .opt .t.vi{font-size:15px}
+  .ln .jp{font-size:16.5px}
+  .kbd{display:none}
 }
 
-.hero{padding:28px 4px 8px}
-.hero h2{font-size:30px;margin:0 0 6px;letter-spacing:-.01em}
-.hero p{color:var(--ink-2);margin:0;font-size:15.5px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:24px}
-.card{display:flex;flex-direction:column;gap:10px;background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:26px 24px;text-decoration:none;color:inherit;border:2px solid transparent;transition:border-color .15s,transform .15s}
-.card:hover{border-color:var(--ink);transform:translateY(-2px)}
-.card .kanji{font-family:"Noto Sans JP",sans-serif;font-size:44px;font-weight:700;line-height:1;color:var(--accent)}
-.card h3{margin:6px 0 0;font-size:22px}
-.card p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.5;flex:1}
-.card .meta{font-size:13px;color:var(--muted)}
-.card .bar{height:6px;border-radius:3px;background:var(--line-2);overflow:hidden}
-.card .bar i{display:block;height:100%;background:var(--ok)}
-.card .go{font-weight:700;margin-top:4px}
+.hero{padding:18px 0 6px}
+.hero h2{font-size:28px;margin:0 0 6px;font-weight:600;letter-spacing:-.01em}
+.hero p{color:var(--ink-2);margin:0;font-size:15px}
+.tiles{display:flex;flex-direction:column;gap:12px;margin-top:22px}
+.tile{display:grid;grid-template-columns:76px 1fr auto;gap:18px;align-items:center;background:var(--card);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;text-decoration:none;color:inherit;transition:border-color .15s}
+.tile:hover{border-color:var(--accent)}
+.tile .kj{width:76px;height:76px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:"Noto Sans JP",sans-serif;font-weight:700;font-size:28px}
+.tile h3{margin:0 0 3px;font-size:18px;font-weight:600}
+.tile p{margin:0;color:var(--ink-2);font-size:13.5px;line-height:1.5}
+.tile .prog{display:flex;align-items:center;gap:10px;margin-top:8px}
+.tile .prog .bar{flex:1;max-width:240px;height:5px;border-radius:3px;background:var(--line-2);overflow:hidden}
+.tile .prog .bar i{display:block;height:100%;background:var(--accent)}
+.tile .prog span{font-size:12px;color:var(--muted)}
+.tile .arrow{font-size:20px;color:var(--accent)}
 /* tạm ẩn ngữ pháp và kính ngữ; xoá dòng dưới để hiện lại */
-.card[href="ngu-phap.html"],.card[href="kinh-ngu.html"]{display:none}
+.tile[href="ngu-phap.html"],.tile[href="kinh-ngu.html"]{display:none}
+@media (max-width:640px){ .tile{grid-template-columns:56px 1fr;padding:14px} .tile .kj{width:56px;height:56px;font-size:21px} .tile .arrow{display:none} .hero h2{font-size:23px} }
 </style>
 <script>try{const t=localStorage.getItem('bjtvocab:theme');if(t)document.documentElement.dataset.theme=JSON.parse(t);}catch(e){}</script>
 </head>
 <body>
 <header class="top">
-  <h1>Ôn tập BJT</h1><span class="badge">BJT</span><span class="spacer"></span>
+  <span class="logo">練</span>
+  <div class="crumb"><small>BJT · Luyện tập</small><h1>Trang chủ</h1></div>
+  <span class="spacer"></span>
   <button class="iconbtn" id="themeBtn" title="Đổi giao diện sáng/tối">◐</button>
 </header>
-<main class="wrap"><div class="col" style="max-width:1000px">
-  <div class="hero"><h2>Hôm nay ôn phần nào?</h2><p>Chọn một phần bên dưới. Mỗi lượt tối đa 20 câu trắc nghiệm, có giọng đọc Tokyo.</p></div>
-  <div class="cards">
-    <a class="card" href="tu-vung.html" data-prefix="vocab" data-total="2217">
-      <div class="kanji">語彙</div><h3>Ôn từ vựng</h3>
-      <p>2217 từ vựng BJT trong 45 bài: cách đọc, ý nghĩa, chọn từ, điền vào câu.</p>
-      <div class="bar"><i></i></div><div class="meta"></div><div class="go">Bắt đầu ›</div></a>
-    <a class="card" href="ngu-phap.html" data-prefix="grammar" data-total="117">
-      <div class="kanji">文法</div><h3>Ôn ngữ pháp</h3>
-      <p>117 mẫu ngữ pháp J3~J2 thường gặp, điền mẫu vào hội thoại công sở.</p>
-      <div class="bar"><i></i></div><div class="meta"></div><div class="go">Bắt đầu ›</div></a>
-    <a class="card" href="kinh-ngu.html" data-prefix="keigo" data-total="58">
-      <div class="kanji">敬語</div><h3>Ôn kính ngữ</h3>
-      <p>Tôn kính ngữ, khiêm nhường ngữ, từ ngữ công sở và các lỗi kính ngữ hay gặp.</p>
-      <div class="bar"><i></i></div><div class="meta"></div><div class="go">Bắt đầu ›</div></a>
+<main class="wrap"><div class="col">
+  <div class="hero"><h2>Hôm nay luyện phần nào?</h2><p>Mỗi lượt tối đa 20 câu trắc nghiệm, có giọng đọc Tokyo.</p></div>
+  <div class="tiles">
+    <a class="tile" href="tu-vung.html" data-prefix="vocab" data-total="2217">
+      <div class="kj">語彙</div>
+      <div><h3>Từ vựng</h3><p>2217 từ BJT trong 45 bài: cách đọc, ý nghĩa, chọn từ, điền vào câu.</p>
+        <div class="prog"><div class="bar"><i></i></div><span></span></div></div>
+      <div class="arrow">→</div></a>
+    <a class="tile" href="ngu-phap.html" data-prefix="grammar" data-total="117">
+      <div class="kj">文法</div>
+      <div><h3>Ngữ pháp</h3><p>117 mẫu ngữ pháp J3~J2 thường gặp, điền mẫu vào hội thoại công sở.</p>
+        <div class="prog"><div class="bar"><i></i></div><span></span></div></div>
+      <div class="arrow">→</div></a>
+    <a class="tile" href="kinh-ngu.html" data-prefix="keigo" data-total="58">
+      <div class="kj">敬語</div>
+      <div><h3>Kính ngữ</h3><p>Tôn kính ngữ, khiêm nhường ngữ, từ ngữ công sở và các lỗi kính ngữ hay gặp.</p>
+        <div class="prog"><div class="bar"><i></i></div><span></span></div></div>
+      <div class="arrow">→</div></a>
   </div>
 </div></main>
 <script>
@@ -198,10 +279,10 @@ let stats={}; try{ stats=JSON.parse(localStorage.getItem('bjtvocab:stats')||'{}'
 const kindOf = id => id.startsWith('g') ? 'grammar' : id.startsWith('k') ? 'keigo' : 'vocab';
 const known = {vocab:0, grammar:0, keigo:0};
 for(const [id,s] of Object.entries(stats)) if(s.c>0) known[kindOf(id)]++;
-document.querySelectorAll('.card').forEach(c=>{
+document.querySelectorAll('.tile').forEach(c=>{
   const k=c.dataset.prefix, tot=+c.dataset.total;
   c.querySelector('.bar i').style.width=(known[k]/tot*100)+'%';
-  c.querySelector('.meta').textContent=`Đã trả lời đúng ${known[k]}/${tot}`;
+  c.querySelector('.prog span').textContent=`Đã đúng ${known[k]}/${tot}`;
 });
 document.getElementById('themeBtn').onclick=()=>{
   const r=document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
