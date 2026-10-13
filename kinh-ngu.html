@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ôn tập kính ngữ BJT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7fb; --card:#ffffff; --ink:#16224a; --ink-2:#4a5578; --muted:#7a839e;
+  --line:#c9cedd; --line-2:#e3e6ef; --accent:#c0442a; --accent-ink:#fff;
+  --ok:#1f8a4c; --ok-bg:#e6f5ec; --bad:#c8352b; --bad-bg:#fdecea; --sel-bg:#eef1fa;
+  --shadow:0 6px 24px rgba(22,34,74,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11152a; --card:#1a2038; --ink:#e7eaf6; --ink-2:#b8bfd9; --muted:#8a93b3;
+    --line:#3a4364; --line-2:#2a3150; --accent:#e0664a; --accent-ink:#fff;
+    --ok:#4cc27e; --ok-bg:#163527; --bad:#f07468; --bad-bg:#3a1d1f; --sel-bg:#242c4c;
+    --shadow:0 6px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11152a; --card:#1a2038; --ink:#e7eaf6; --ink-2:#b8bfd9; --muted:#8a93b3;
+  --line:#3a4364; --line-2:#2a3150; --accent:#e0664a; --accent-ink:#fff;
+  --ok:#4cc27e; --ok-bg:#163527; --bad:#f07468; --bad-bg:#3a1d1f; --sel-bg:#242c4c;
+  --shadow:0 6px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro","Noto Sans JP",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.jp{font-family:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.hidden{display:none!important}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:14px;padding:18px 24px}
+.back{background:none;border:0;padding:6px;border-radius:8px;display:flex}
+.back:hover{background:var(--line-2)}
+.top h1{font-size:26px;font-weight:700;margin:0;letter-spacing:-.01em}
+.badge{background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:15px;padding:3px 12px;border-radius:999px}
+.top .spacer{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:13px;color:var(--ink-2)}
+
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px 140px}
+.col{max-width:840px;margin:0 auto}
+
+/* setup */
+.panel{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:24px;margin-bottom:18px}
+.panel h2{font-size:17px;margin:0 0 4px}
+.panel .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px}
+.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
+.lchip{border:1.5px solid var(--line);background:none;border-radius:12px;padding:8px 4px 6px;text-align:center;position:relative}
+.lchip b{display:block;font-size:15px}
+.lchip small{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
+.lchip .bar{height:3px;border-radius:2px;background:var(--line-2);margin:5px 6px 0;overflow:hidden}
+.lchip .bar i{display:block;height:100%;background:var(--ok)}
+.lchip.on{border-color:var(--ink);background:var(--sel-bg)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pill{border:1.5px solid var(--line);background:none;border-radius:999px;padding:7px 14px;font-size:14px}
+.pill.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.mini{border:0;background:none;color:var(--ink-2);text-decoration:underline;font-size:13px;padding:4px}
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.tcard{border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:none;text-align:left}
+.tcard.on{border-color:var(--ink);background:var(--sel-bg)}
+.tcard b{display:block;font-size:14.5px}
+.tcard span{font-size:12.5px;color:var(--muted)}
+.start{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:14px 34px;font-weight:700;font-size:17px;background:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink)}
+.stat{color:var(--ink-2);font-size:14px}
+.stat b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2)}
+
+/* quiz */
+.nav{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 10px;scrollbar-width:thin}
+.dot{flex:0 0 auto;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--ink-2);background:none;font-weight:600;font-size:17px}
+.dot.cur{border-width:3.5px;border-color:var(--ink)}
+.dot.ans{background:var(--sel-bg)}
+.dot.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.dot.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.dot.cur.ok{border-color:var(--ok)} .dot.cur.bad{border-color:var(--bad)}
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.qhead .qn{font-size:21px;font-weight:700}
+.timer{display:flex;align-items:center;gap:6px;font-weight:600;font-size:20px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.qtype{color:var(--muted);font-size:14.5px;margin:8px 0 14px;letter-spacing:.02em}
+.qcard{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:22px 28px 26px}
+.qcard .ask{font-weight:600;color:var(--ink-2);font-size:15.5px;margin-bottom:12px}
+.sent{font-size:25px;line-height:1.75}
+.sent u{text-decoration-thickness:2.5px;text-underline-offset:5px;font-weight:700}
+.blank{display:inline-block;min-width:4.2em;border-bottom:2.5px solid var(--ink);margin:0 .2em;text-align:center}
+.bigword{font-size:40px;font-weight:700;letter-spacing:.02em}
+.bigvi{font-size:22px;font-weight:600;line-height:1.5}
+.hint{color:var(--muted);font-size:14px;margin-top:6px}
+.speak{border:1px solid var(--line);background:none;border-radius:999px;padding:4px 10px;font-size:12.5px;color:var(--ink-2);margin-left:8px;vertical-align:middle}
+.opts{display:flex;flex-direction:column;gap:14px;margin-top:22px}
+.opt{display:flex;align-items:center;gap:22px;border:1.5px solid var(--ink-2);border-radius:16px;background:var(--card);padding:18px 24px;text-align:left;min-height:84px;transition:background .12s,border-color .12s}
+.opt:hover:not(:disabled){background:var(--sel-bg)}
+.opt .n{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--ink-2);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px}
+.opt .t{font-size:24px;line-height:1.4}
+.opt .t.vi{font-size:18px;font-family:"Be Vietnam Pro",sans-serif}
+.opt.sel{border-color:var(--ink);border-width:2.5px;background:var(--sel-bg)}
+.opt.sel .n{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.opt.ok{border-color:var(--ok);border-width:2.5px;background:var(--ok-bg)}
+.opt.ok .n{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.bad{border-color:var(--bad);border-width:2.5px;background:var(--bad-bg)}
+.opt.bad .n{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt:disabled{cursor:default}
+.explain{margin-top:18px;background:var(--card);border-radius:18px;border-left:5px solid var(--ok);padding:16px 22px;box-shadow:var(--shadow)}
+.explain.wrong{border-left-color:var(--bad)}
+.explain .w{font-size:22px;font-weight:700}
+.explain .w small{font-size:15px;font-weight:500;color:var(--ink-2);margin-left:8px}
+.explain .m{margin:6px 0 2px;font-size:15.5px;line-height:1.55}
+.explain .en{color:var(--muted);font-size:13px}
+.explain .ex{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.explain .ex .j{font-size:17px;line-height:1.6}
+.explain .ex .v{font-size:14px;color:var(--ink-2);line-height:1.5}
+
+.bottom{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;pointer-events:none}
+.bottom .in{pointer-events:auto;width:100%;max-width:872px;background:var(--bg);padding:14px 16px 18px;display:flex;gap:18px;align-items:center;box-shadow:0 -8px 24px rgba(22,34,74,.06)}
+.bottom .in .btn{flex:1;padding:15px}
+.bottom .cnt{font-size:22px;font-weight:600;min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+
+/* results */
+.score{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.ring{width:130px;height:130px}
+.score h2{font-size:28px;margin:0}
+.score p{margin:6px 0 0;color:var(--ink-2)}
+.rlist{display:flex;flex-direction:column;gap:10px}
+.ritem{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;border:1px solid var(--line-2);border-radius:14px;padding:12px 14px}
+.ritem .mk{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+.ritem .mk.ok{background:var(--ok)} .ritem .mk.bad{background:var(--bad)}
+.ritem .w{font-size:19px;font-weight:700}
+.ritem .w small{font-weight:500;color:var(--ink-2);font-size:14px;margin-left:6px}
+.ritem .m{font-size:14px;color:var(--ink-2);margin-top:2px}
+.ritem .yours{font-size:13px;color:var(--bad);margin-top:4px}
+.filters{display:flex;gap:8px;margin-bottom:12px}
+
+@media (max-width:640px){
+  .top{padding:14px 16px}
+  .top h1{font-size:20px}
+  .dot{width:42px;height:42px;font-size:15px}
+  .qcard{padding:18px 18px 20px}
+  .sent{font-size:20px}
+  .bigword{font-size:32px}
+  .opt{padding:14px 16px;gap:14px;min-height:64px}
+  .opt .n{width:36px;height:36px;font-size:15px}
+  .opt .t{font-size:20px}
+  .opt .t.vi{font-size:16px}
+  .bottom .in .btn{padding:13px;font-size:15px}
+  .bottom .cnt{font-size:17px;min-width:50px}
+}
+.lessons.wide{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.sent.sub{font-size:18px;margin-top:8px;color:var(--ink-2)}
+.sent s, .explain s{text-decoration-color:var(--bad);text-decoration-thickness:2px}
+.opt .t.long{font-size:18px}
+.ctx{color:var(--muted);font-size:14px;margin-bottom:8px}
+.dlg{display:flex;flex-direction:column;gap:12px}
+.ln{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
+.ln .spk{width:28px;height:28px;border-radius:50%;background:var(--line-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;margin-top:4px}
+.ln .jp{font-size:20px;line-height:1.7}
+.ln.focus .jp{font-weight:500}
+.ln .tr{font-size:14px;color:var(--ink-2);line-height:1.5;margin-top:2px}
+.explain .ln .jp{font-size:17px}
+mark{background:none;color:inherit;font-weight:700;text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:5px;text-decoration-color:var(--ok)}
+.kt{border-collapse:collapse;width:100%;margin-top:10px;font-size:16px}
+.kt th{text-align:left;font-weight:600;color:var(--ink-2);padding:8px 12px 8px 0;width:120px;vertical-align:top;font-size:14px}
+.kt th small{font-weight:400;color:var(--muted)}
+.kt td{padding:8px 0;border-top:1px solid var(--line-2);line-height:1.9}
+.kt tr:first-child td{border-top:0}
+.ritem{cursor:pointer}
+@media (max-width:640px){ .ln .jp{font-size:17px} .opt .t.long{font-size:15px} }
+.top h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+
+</style>
+<script>try{const t=localStorage.getItem('bjtvocab:theme');if(t)document.documentElement.dataset.theme=JSON.parse(t);}catch(e){}</script>
+</head>
+<body>
+<header class="top">
+  <button class="back" id="backBtn" title="Quay lại" aria-label="Quay lại">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  </button>
+  <h1 id="title"></h1>
+  <span class="badge">BJT</span>
+  <span class="spacer"></span>
+  <button class="iconbtn" id="themeBtn" title="Đổi giao diện sáng/tối">◐</button>
+</header>
+<main class="wrap">
+  <section id="setup" class="col">
+    <div class="panel">
+      <h2 id="groupTitle"></h2>
+      <p class="sub" id="groupSub"></p>
+      <div class="row" style="margin-bottom:12px" id="quick"></div>
+      <div class="lessons" id="lessons"></div>
+    </div>
+    <div class="panel">
+      <h2>Dạng câu hỏi</h2>
+      <p class="sub">Trộn ngẫu nhiên các dạng đã bật.</p>
+      <div class="types" id="types"></div>
+    </div>
+    <div class="panel">
+      <h2>Cách chọn câu</h2>
+      <p class="sub">“Ưu tiên câu yếu” chọn trước các mục chưa gặp hoặc hay làm sai.</p>
+      <div class="row" id="modes"></div>
+      <div class="row" style="margin-top:16px">
+        <label class="toggle"><input type="checkbox" id="instant"> Hiện đáp án ngay sau khi chọn</label>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <label class="toggle"><input type="checkbox" id="autoplay"> Tự đọc (giọng Tokyo) sau khi trả lời</label>
+      </div>
+    </div>
+    <div class="panel start">
+      <div class="stat" id="poolStat"></div>
+      <button class="btn" id="startBtn">Bắt đầu</button>
+    </div>
+    <div class="row" style="justify-content:flex-end"><button class="mini" id="resetBtn">Xoá lịch sử ôn tập phần này</button></div>
+  </section>
+  <section id="quiz" class="col hidden">
+    <div class="nav" id="nav"></div>
+    <div class="qhead">
+      <div class="qn" id="qn"></div>
+      <div class="timer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M10 2h4M19 5l1.5-1.5"/></svg><span id="timer">00:00</span></div>
+    </div>
+    <div class="qtype" id="qtype"></div>
+    <div class="qcard"><div class="ask" id="ask"></div><div id="stem"></div></div>
+    <div class="opts" id="opts"></div>
+    <div id="explain"></div>
+  </section>
+  <section id="result" class="col hidden">
+    <div class="panel score" id="scoreBox"></div>
+    <div class="panel"><div class="filters" id="rfilters"></div><div class="rlist" id="rlist"></div></div>
+    <div class="row" style="gap:12px">
+      <button class="btn" id="retryWrong">Ôn lại câu sai</button>
+      <button class="btn ghost" id="newRound">Làm lượt mới</button>
+      <button class="btn ghost" id="toSetup">Đổi phần ôn</button>
+    </div>
+  </section>
+</main>
+<div class="bottom hidden" id="bottom"><div class="in">
+  <button class="btn ghost" id="prevBtn">‹&nbsp; Prev</button>
+  <div class="cnt" id="cnt"></div>
+  <button class="btn" id="nextBtn">Next &nbsp;›</button>
+</div></div>
+<script>
+const MODULE = 'keigo';
+const DATA = [{"id":"kv1","kind":"verb","b":"する","son":["なさる","される"],"ken":["いたす","させていただく"],"tei":["します"],"note":"いたす: việc mình tự làm; させていただく: làm nhờ được đối phương cho phép / có lợi cho mình"},{"id":"kv2","kind":"verb","b":"言う","son":["おっしゃる","言われる"],"ken":["申す","申し上げる"],"tei":["言います"],"note":""},{"id":"kv3","kind":"verb","b":"行く","son":["行かれる","いらっしゃる","おいでになる","お越しになる"],"ken":["うかがう","参る"],"tei":["行きます"],"note":""},{"id":"kv4","kind":"verb","b":"来る","son":["いらっしゃる","おいでになる","見える","お越しになる"],"ken":["参る","伺う"],"tei":["来ます"],"note":""},{"id":"kv5","kind":"verb","b":"知っている","son":["ご存じです"],"ken":["存じる","存じ上げる","承知する"],"tei":["知っています"],"note":""},{"id":"kv6","kind":"verb","b":"食べる","son":["召し上がる"],"ken":["いただく","頂戴する"],"tei":["食べます"],"note":""},{"id":"kv7","kind":"verb","b":"いる","son":["いらっしゃる","おいでになる"],"ken":["おる"],"tei":["います","おります"],"note":""},{"id":"kv8","kind":"verb","b":"見る","son":["ご覧になる"],"ken":["拝見する","見せていただく"],"tei":["見ます"],"note":""},{"id":"kv9","kind":"verb","b":"見せる","son":["お見せになる","お示しになる"],"ken":["お見せする","ご覧に入れる","お目にかける"],"tei":["見せます"],"note":""},{"id":"kv10","kind":"verb","b":"聞く","son":["お聞きになる"],"ken":["拝聴する","うかがう"],"tei":["聞きます"],"note":""},{"id":"kv11","kind":"verb","b":"聞かせる","son":["お聞かせになる"],"ken":["お耳に入れる"],"tei":["聞かせます"],"note":""},{"id":"kv12","kind":"verb","b":"読む","son":["お読みになる"],"ken":["拝読する"],"tei":["読みます"],"note":""},{"id":"kv13","kind":"verb","b":"座る","son":["お掛けになる"],"ken":["お座りする","座らせていただく"],"tei":["座ります"],"note":""},{"id":"kv14","kind":"verb","b":"会う","son":["お会いになる","会われる"],"ken":["お目にかかる"],"tei":["会います"],"note":""},{"id":"kv15","kind":"verb","b":"伝える","son":["お伝えになる"],"ken":["申し伝える"],"tei":["伝えます"],"note":"申し伝える cũng là khiêm nhường ngữ của 言い伝える"},{"id":"kv16","kind":"verb","b":"訪ねる","son":["お訪ねになる","訪ねられる"],"ken":["お訪ねする","伺う","お伺いする","参上する","参る","上がる","お邪魔する"],"tei":["訪ねます"],"note":""},{"id":"kv17","kind":"verb","b":"わかる","son":["おわかりになる"],"ken":["かしこまる","承知する"],"tei":["わかりました"],"note":""},{"id":"kv18","kind":"verb","b":"受け取る","son":["お受け取りになる"],"ken":["頂戴する","拝受する","賜る"],"tei":["受け取ります"],"note":""},{"id":"kv19","kind":"verb","b":"利用する","son":["ご利用になる","利用なさる"],"ken":["利用させていただく"],"tei":["利用します"],"note":""},{"id":"kv20","kind":"verb","b":"思う","son":["お思いになる","おぼし召す"],"ken":["存じる","拝察する"],"tei":["思います"],"note":""},{"id":"kv21","kind":"verb","b":"買う","son":["お(買い)求めになる","お買い(上げ)になる","ご購入になる"],"ken":["買わせていただく"],"tei":["買います"],"note":""},{"id":"kv22","kind":"verb","b":"考える","son":["お考えになる","ご高察なさる","ご高察くださる"],"ken":["拝察する","愚考する","検討する"],"tei":["考えます"],"note":""},{"id":"kv23","kind":"verb","b":"待つ","son":["お待ちになる"],"ken":["お待ちする"],"tei":["待ちます"],"note":""},{"id":"kv24","kind":"verb","b":"帰る","son":["お帰りになる","帰られる"],"ken":["失礼する"],"tei":["帰ります"],"note":""},{"id":"kv25","kind":"verb","b":"与える","son":["お与えになる"],"ken":["差し上げる"],"tei":["与えます"],"note":""},{"id":"kv26","kind":"verb","b":"もらう","son":["お受け取りになる","お納めになる"],"ken":["いただく","頂戴する","賜る"],"tei":["もらいます"],"note":""},{"id":"kv27","kind":"verb","b":"気に入る","son":["お気に召す"],"ken":[],"tei":["気に入ります"],"note":""},{"id":"kv28","kind":"verb","b":"風邪を引く","son":["お風邪を召す"],"ken":[],"tei":["風邪を引きます"],"note":""},{"id":"kv29","kind":"verb","b":"風呂にはいる","son":["お風呂に召す"],"ken":[],"tei":["風呂にはいります"],"note":""},{"id":"kv30","kind":"verb","b":"年をとる","son":["お年を召す"],"ken":[],"tei":["年をとります"],"note":""},{"id":"kv31","kind":"verb","b":"着る","son":["召す","着られる","お召しになる"],"ken":["着させていただく","身につけさせていただく"],"tei":["着ます"],"note":""},{"id":"kv32","kind":"verb","b":"確認する","son":["確認なさる","確認される","ご確認くださる"],"ken":["確認いたす"],"tei":["確認します"],"note":""},{"id":"kv33","kind":"verb","b":"借りる","son":["お借りになる","借りられる"],"ken":["お借りする","お借りいたす","拝借する"],"tei":["借ります"],"note":""},{"id":"kv34","kind":"verb","b":"承諾する","son":["ご承諾になる","承諾される","(ご)承諾なさる","ご承諾くださる"],"ken":["かしこまる","承諾いたす","承諾申し上げる","承諾させていただく"],"tei":["承諾します"],"note":""},{"id":"kb1","kind":"biz","plain":"今日","biz":"本日","say":"ほんじつ"},{"id":"kb2","kind":"biz","plain":"昨日（きのう）","biz":"昨日（さくじつ）","say":"さくじつ"},{"id":"kb3","kind":"biz","plain":"明日（あした）","biz":"明日（あす／みょうにち）","say":"あす"},{"id":"kb4","kind":"biz","plain":"一昨日（おととい）","biz":"一昨日（いっさくじつ）","say":"いっさくじつ"},{"id":"kb5","kind":"biz","plain":"明後日（あさって）","biz":"明後日（みょうごにち）","say":"みょうごにち"},{"id":"kb6","kind":"biz","plain":"今度","biz":"このたび","say":"このたび"},{"id":"kb7","kind":"biz","plain":"さっき","biz":"先ほど（さきほど）","say":"さきほど"},{"id":"kb8","kind":"biz","plain":"前に","biz":"以前","say":"いぜん"},{"id":"kb9","kind":"biz","plain":"後で","biz":"後ほど（のちほど）","say":"のちほど"},{"id":"kb10","kind":"biz","plain":"もうすぐ","biz":"まもなく","say":"まもなく"},{"id":"kb11","kind":"biz","plain":"です","biz":"でございます","say":"でございます"},{"id":"kb12","kind":"biz","plain":"ではありません","biz":"でございません","say":"でございません"},{"id":"kb13","kind":"biz","plain":"あります","biz":"ございます","say":"ございます"},{"id":"kb14","kind":"biz","plain":"ありません","biz":"ございません","say":"ございません"},{"id":"kb15","kind":"biz","plain":"ここ／そこ／あそこ","biz":"こちら／そちら／あちら","say":"こちら、そちら、あちら"},{"id":"kb16","kind":"biz","plain":"私（わたし）","biz":"私（わたくし）","say":"わたくし"},{"id":"kb17","kind":"biz","plain":"ごめんなさい","biz":"申し訳ありません／申し訳ございません","say":"もうしわけございません"},{"id":"kb18","kind":"biz","plain":"いいですか","biz":"よろしいでしょうか","say":"よろしいでしょうか"},{"id":"ke1","kind":"err","wrong":"佐藤さんはおられますか？","right":"佐藤さんはいらっしゃいますか？","dis":["佐藤さんはおりますか？","佐藤さんは参られますか？","佐藤さんはおられますか？"],"note":"おる là khiêm nhường ngữ, không dùng cho người khác dù thêm られる."},{"id":"ke2","kind":"err","wrong":"鈴木様でございますか？","right":"鈴木様でいらっしゃいますか？","dis":["鈴木様でおられますか？","鈴木様でございますでしょうか？","鈴木様でございますか？"],"note":"でございます là thể lịch sự/khiêm nhường, khi hỏi về đối phương phải dùng でいらっしゃいます."},{"id":"ke3","kind":"err","wrong":"ご確認してください。","right":"ご確認ください。","dis":["ご確認いたしてください。","ご確認されてください。","ご確認してください。"],"note":"ご～する là khiêm nhường; khi nhờ đối phương dùng ご～ください."},{"id":"ke4","kind":"err","wrong":"（社外の人に対して）ただいま田中部長がおっしゃったように…","right":"（社外の人に対して）ただいま部長の田中が申したように…","dis":["（社外の人に対して）ただいま部長の田中がおっしゃったように…","（社外の人に対して）ただいま田中部長が申されたように…","（社外の人に対して）ただいま田中部長がおっしゃったように…"],"note":"Nói với người ngoài công ty thì người trong công ty mình là “phía mình”: bỏ chức danh sau tên, dùng khiêm nhường ngữ 申す."},{"id":"ke5","kind":"err","wrong":"資料は拝見されましたでしょうか。","right":"資料はご覧いただけましたでしょうか。","dis":["資料は拝見なさいましたでしょうか。","資料は拝見いただけましたでしょうか。","資料は拝見されましたでしょうか。"],"note":"拝見する là khiêm nhường ngữ, không dùng cho hành động của đối phương."},{"id":"ke6","kind":"err","wrong":"おっしゃられました","right":"おっしゃいました","dis":["申されました","言われられました","おっしゃられました"],"note":"おっしゃる đã là tôn kính ngữ, thêm られる thành kính ngữ kép (二重敬語)."}];
+const DATA_AUDIO = {"なさる":"t/4be77d419e3b","される":"t/df34d6c48261","いたす":"t/4f2f7d8fbb49","させていただく":"t/cf7ada6de375","する":"t/4aa34648b67c","おっしゃる":"t/65cab626d358","言われる":"t/0a0d7e70572d","申す":"t/2430a43fa476","申し上げる":"t/d885de57d30a","言う":"t/e2329c277f51","行かれる":"t/b1c649c26abf","いらっしゃる":"t/5e30f1812446","おいでになる":"t/ea52b9035c62","お越しになる":"t/0c270a61195a","うかがう":"t/43a11e39b4e6","参る":"t/ba450f99699e","行く":"t/638c386a4d8a","見える":"t/495032b4033a","伺う":"t/ab1f20588214","来る":"t/71400c113af9","ご存じです":"t/7e4324c3ac85","存じる":"t/a05624812d6c","存じ上げる":"t/340404e3d767","承知する":"t/2ff91579c16d","知っている":"t/f158f6f20d8f","召し上がる":"t/180e06d7326a","いただく":"t/87a697c85586","頂戴する":"t/5eb2519266de","食べる":"t/21dac0842106","おる":"t/a171fa91014a","いる":"t/c7d693c51cc1","ご覧になる":"t/6209524a4b21","拝見する":"t/07437375c05d","見せていただく":"t/3372f1530a29","見る":"t/c88ba17eb422","お見せになる":"t/386ffc0cc38c","お示しになる":"t/5df986e15d3b","お見せする":"t/6e8c59e96e18","ご覧に入れる":"t/aceb082e204e","お目にかける":"t/7eb023876558","見せる":"t/fdb98a7a9fbd","お聞きになる":"t/a148b6876219","拝聴する":"t/8620aeabbc82","聞く":"t/abb639bc774f","お聞かせになる":"t/efd026f0fe14","お耳に入れる":"t/f2f3a0cc2143","聞かせる":"t/9a8cf8e8a8cb","お読みになる":"t/8ba907b62b54","拝読する":"t/91d721fd0971","読む":"t/7fc9b181f57e","お掛けになる":"t/e5d3ff99a7d6","お座りする":"t/d0fdfb5bb618","座らせていただく":"t/eac2ac5b8d63","座る":"t/82f9b87241f1","お会いになる":"t/cc73cde50f9e","会われる":"t/a7be376fbf25","お目にかかる":"t/ab20f9caaa86","会う":"t/848921dea97e","お伝えになる":"t/0943abbe41c9","申し伝える":"t/22fede57bcb5","伝える":"t/7672d14409e6","お訪ねになる":"t/ab66f7b04e7c","訪ねられる":"t/2c495857a8ea","お訪ねする":"t/27ec56920b7f","お伺いする":"t/4e5e7fb1dcdc","参上する":"t/b03c185a5778","上がる":"t/59355004ece0","お邪魔する":"t/42e607ff0339","訪ねる":"t/6647a9adc756","おわかりになる":"t/6a9489a9c8cc","かしこまる":"t/17b0345bb422","わかる":"t/278ac6fcc5b8","お受け取りになる":"t/36afa56a1b94","拝受する":"t/3402328934f1","賜る":"t/b19af03fa347","受け取る":"t/e6ee89210381","ご利用になる":"t/ab5e07f742dd","利用なさる":"t/d9861a0775d4","利用させていただく":"t/0cef21abdf94","利用する":"t/e55b63052331","お思いになる":"t/be9cafb49f7a","おぼし召す":"t/8fbca6dd7282","拝察する":"t/6b04a6a77635","思う":"t/c5ea074db5ec","お(買い)求めになる":"t/3190d743e755","お買い(上げ)になる":"t/c578c26781d0","ご購入になる":"t/ff09cb4ac30d","買わせていただく":"t/7ae2a022211a","買う":"t/3dcc92b12e28","お考えになる":"t/932c7dcbe3b6","ご高察なさる":"t/92af5d78282c","ご高察くださる":"t/7a6fd696cd05","愚考する":"t/7df90e4e4af0","検討する":"t/aa40bc95997f","考える":"t/86e563184631","お待ちになる":"t/1717975ceeac","お待ちする":"t/684ca13d3eaf","待つ":"t/64df5a06852b","お帰りになる":"t/5d4ddca82514","帰られる":"t/b18cf22a3109","失礼する":"t/835730faa78c","帰る":"t/3a9f9a5edc18","お与えになる":"t/63d52a405ba2","差し上げる":"t/1ccf12084f3b","与える":"t/65a52adbd87c","お納めになる":"t/2ad8e5385a7f","もらう":"t/70851a939cbe","お気に召す":"t/416c0f5c50d2","気に入る":"t/572311a2c273","お風邪を召す":"t/f593fe223105","風邪を引く":"t/88eb61941e60","お風呂に召す":"t/2fe915032793","風呂にはいる":"t/03de15c467d5","お年を召す":"t/c6d8f1581781","年をとる":"t/9722abd76ad1","召す":"t/71c4c8774628","着られる":"t/c6aa3884a782","お召しになる":"t/06c08571cece","着させていただく":"t/f7cbca3acfe6","身につけさせていただく":"t/c14e503e5e8d","着る":"t/94959c02dce1","確認なさる":"t/815cc34b30ac","確認される":"t/706ee2e10761","ご確認くださる":"t/0177df4f3fd8","確認いたす":"t/02a624c79ff4","確認する":"t/b0f017d7af6f","お借りになる":"t/e85feaf83699","借りられる":"t/7dc072a3697f","お借りする":"t/c0a7b2a954f9","お借りいたす":"t/44cfcfd53096","拝借する":"t/6037518d3f12","借りる":"t/5ba9a2f65988","ご承諾になる":"t/3d574bab3f47","承諾される":"t/1153a6cee04e","(ご)承諾なさる":"t/51538d55a479","ご承諾くださる":"t/60f5050486be","承諾いたす":"t/5070293d5a48","承諾申し上げる":"t/22d0e4727528","承諾させていただく":"t/a174bd110e68","承諾する":"t/a874885e980c","ほんじつ":"t/274e92640342","さくじつ":"t/a10b45f8c4f3","あす":"t/eb8aff8087bf","いっさくじつ":"t/4dd4dac23e96","みょうごにち":"t/6a197690ad77","このたび":"t/e4e65cf4e316","さきほど":"t/94ba202b4412","いぜん":"t/1c82ebe1ef73","のちほど":"t/46503e3ab967","まもなく":"t/fcc3d439cd89","でございます":"t/2f2bc5b816a7","でございません":"t/b9c224b7c051","ございます":"t/8543421ac0af","ございません":"t/e07b79dec3c9","こちら、そちら、あちら":"t/7949d2d78075","わたくし":"t/0b74737b6e2e","もうしわけございません":"t/868f848cb73a","よろしいでしょうか":"t/cc53c1d1799f","佐藤さんはいらっしゃいますか？":"t/aa0e5b3c82b2","鈴木様でいらっしゃいますか？":"t/a6ff9d0d46a3","ご確認ください。":"t/ea1e746da999","ただいま部長の田中が申したように…":"t/abeb5fbffdd2","資料はご覧いただけましたでしょうか。":"t/77c9eb646d80","おっしゃいました":"t/9aa1b22b5627"};
+/* ===================== modules ===================== */
+const MODULES = {};
+
+/* ---------------- Từ vựng ---------------- */
+if(MODULE==='vocab'){
+  const hasKanji = s => /[一-鿿々]/.test(s);
+  const isKata = s => /^[゠-ヿー・Ａ-Ｚa-zA-Z0-9\s]+$/.test(s);
+  const forms = w => { const out=[]; const m=w.match(/^(.*?)（(.*?)）(.*)$/);
+    if(m){ out.push(m[1]+m[3]); out.push(m[2]); } else out.push(w);
+    return out.map(s=>s.replace(/[～〜~]/g,'').trim()).filter(Boolean); };
+  const mainForm = w => forms(w)[0];
+  const shortMeaning = m => { let s=m.split(/[:：·]/)[0].trim();
+    if(s.length>70) s=s.replace(/\s*\(.*?\)\s*/g,' ').trim();
+    if(s.length>70) s=s.slice(0,68).replace(/[,\s]+\S*$/,'')+'…';
+    return s.replace(/[.。]+$/,''); };
+  const wordClass = w => { const f=mainForm(w); if(isKata(f)) return 'kata'; if(/[ぁ-ん]$/.test(f)) return 'kana-end'; return 'kanji'; };
+  const findIn = v => { for(const ex of v.ex) for(const f of forms(v.w).sort((a,b)=>b.length-a.length)){ const i=ex[0].indexOf(f); if(i>=0) return {ex,i,f,k:v.ex.indexOf(ex)}; } return null; };
+  const hitHTML = (hit,tag) => { const s=hit.ex[0]; return esc(s.slice(0,hit.i))+`<${tag}>`+esc(hit.f)+`</${tag}>`+esc(s.slice(hit.i+hit.f.length)); };
+
+  // reading distractors: near-miss kana (voicing, っ, long vowels, ょ/ゅ, ん)
+  const VOICE = {'か':'が','き':'ぎ','く':'ぐ','け':'げ','こ':'ご','さ':'ざ','し':'じ','す':'ず','せ':'ぜ','そ':'ぞ','た':'だ','ち':'ぢ','つ':'づ','て':'で','と':'ど','は':'ば','ひ':'び','ふ':'ぶ','へ':'べ','ほ':'ぼ'};
+  const UNVOICE = Object.fromEntries(Object.entries(VOICE).map(([a,b])=>[b,a]));
+  Object.assign(UNVOICE,{'ぱ':'は','ぴ':'ひ','ぷ':'ふ','ぺ':'へ','ぽ':'ほ'});
+  const HPMAP = {'は':'ぱ','ひ':'ぴ','ふ':'ぷ','へ':'ぺ','ほ':'ぽ','ば':'ぱ','び':'ぴ','ぶ':'ぷ','べ':'ぺ','ぼ':'ぽ'};
+  const OROW = 'おこごそぞとどのほぼぽもよろょ', SOKU = 'かきくけこさしすせそたちつてとぱぴぷぺぽ';
+  const mutations = r => { const out=new Set(); const ch=[...r];
+    ch.forEach((c,i)=>{
+      const rep = x => { const a=ch.slice(); a[i]=x; out.add(a.join('')); };
+      const del = () => { const a=ch.slice(); a.splice(i,1); out.add(a.join('')); };
+      if(VOICE[c]) rep(VOICE[c]); if(UNVOICE[c]) rep(UNVOICE[c]); if(HPMAP[c]) rep(HPMAP[c]);
+      if(c==='っ'){ del(); rep('つ'); }
+      if(c==='ょ') rep('ゅ'); if(c==='ゅ') rep('ょ');
+      if(c==='う' && i>0 && OROW.includes(ch[i-1])) del();
+      if(c==='い' && i>0 && 'えけげせぜてでねへべめれ'.includes(ch[i-1])) del();
+      if(c==='ん' && i>0) del();
+      if(i>0 && SOKU.includes(c) && ch[i-1]!=='っ' && ch[i-1]!=='ん'){ const a=ch.slice(); a.splice(i,0,'っ'); out.add(a.join('')); }
+      if(OROW.includes(c) && ch[i+1]!=='う' && ch[i+1]!=='ょ'){ const a=ch.slice(); a.splice(i+1,0,'う'); out.add(a.join('')); }
+    });
+    out.delete(r); return [...out].filter(s=>!/^[っんー]/.test(s)); };
+  const readingOptions = v => { const r=v.r; let pool=shuffle(mutations(r));
+    if(pool.length<3) pool=pool.concat(shuffle(pool.flatMap(mutations)).filter(x=>x!==r));
+    let res=pickN(pool,3,[r]);
+    if(res.length<3) res=res.concat(pickN(DATA.filter(o=>o.r && /^[ぁ-ん]+$/.test(o.r) && Math.abs(o.r.length-r.length)<=1).map(o=>o.r),3-res.length,[r,...res]));
+    return res; };
+  const others = (v,pool,n,key,filter) => { let c=pickN(pool.filter(o=>o.id!==v.id&&(!filter||filter(o))).map(key),n,[key(v)]);
+    if(c.length<n) c=c.concat(pickN(DATA.filter(o=>o.id!==v.id&&(!filter||filter(o))).map(key),n-c.length,[key(v),...c])); return c; };
+
+  const lessons=[...new Set(DATA.map(v=>v.l))].sort((a,b)=>a-b);
+  MODULES.vocab = {
+    key:'vocab', name:'Từ vựng', title:'Ôn tập từ vựng', quizTitle:'Kiểm tra từ vựng', unit:'từ',
+    items: DATA,
+    groupTitle:'Chọn bài', groupSub:'Mỗi lượt 20 câu, lấy từ các bài đã chọn. Thanh xanh = tỉ lệ từ đã trả lời đúng ít nhất 1 lần.',
+    groups: lessons.map(l=>({k:String(l), label:String(l)})),
+    groupOf: v => String(v.l),
+    quick:[['all','Chọn tất cả'],['none','Bỏ chọn'],['1-15','Bài 1–15'],['16-30','Bài 16–30'],['31-45','Bài 31–45']],
+    select: k => k==='all'?lessons.map(String):k==='none'?[]:(([a,b])=>lessons.filter(l=>l>=a&&l<=b).map(String))(k.split('-').map(Number)),
+    types:[
+      {k:'doc',  label:'Cách đọc · 漢字読み', name:'Cách đọc', desc:'Chọn cách đọc đúng của từ Kanji'},
+      {k:'nghia',label:'Ý nghĩa · 意味', name:'Ý nghĩa', desc:'Từ tiếng Nhật → nghĩa tiếng Việt'},
+      {k:'tu',   label:'Chọn từ · 語彙', name:'Chọn từ', desc:'Nghĩa tiếng Việt → từ tiếng Nhật'},
+      {k:'dien', label:'Điền từ · 文脈規定', name:'Điền vào câu', desc:'Chọn từ hợp với chỗ trống trong câu'},
+    ],
+    canDo(t,v){
+      if(t==='doc') return !!v.r && /^[ぁ-んー]+$/.test(v.r) && hasKanji(v.w);
+      if(t==='nghia'||t==='tu') return !!v.m;
+      if(t==='dien') return !!v.m && !!findIn(v);
+      return false;
+    },
+    build(t,v,pool){
+      if(t==='doc'){
+        const hit=findIn(v);
+        return {ask:'Từ gạch chân đọc như thế nào?',
+          stem: hit?`<div class="sent jp">${hitHTML(hit,'u')}</div>`:`<div class="bigword jp"><u>${esc(mainForm(v.w))}</u></div>`,
+          options: shuffle([{t:v.r,ok:true},...readingOptions(v).map(x=>({t:x,ok:false}))])};
+      }
+      if(t==='nghia'){
+        const hit=findIn(v), cls=wordClass(v.w);
+        return {ask:'Từ sau có nghĩa là gì?', optClass:'vi',
+          stem:`<div class="bigword jp">${esc(v.w.replace(/（.*?）/,''))}</div>`+(hit?`<div class="sent jp sub">${hitHTML(hit,'u')}</div>`:''),
+          options: shuffle([{t:shortMeaning(v.m),ok:true},...others(v,pool,3,o=>o.m&&shortMeaning(o.m),o=>!!o.m&&wordClass(o.w)===cls).map(x=>({t:x,ok:false}))])};
+      }
+      if(t==='tu'){
+        const cls=wordClass(v.w);
+        return {ask:'Từ nào mang nghĩa sau?',
+          stem:`<div class="bigvi">${esc(shortMeaning(v.m))}</div>`+(v.en?`<div class="hint">EN: ${esc(v.en)}</div>`:''),
+          options: shuffle([{t:mainForm(v.w),ok:true},...others(v,pool,3,o=>mainForm(o.w),o=>wordClass(o.w)===cls).map(x=>({t:x,ok:false}))])};
+      }
+      const hit=findIn(v), cls=wordClass(hit.f), s=hit.ex[0];
+      return {ask:'Chọn từ thích hợp điền vào chỗ trống.',
+        stem:`<div class="sent jp">${esc(s.slice(0,hit.i))}<span class="blank">&emsp;&emsp;</span>${esc(s.slice(hit.i+hit.f.length))}</div>`,
+        options: shuffle([{t:hit.f,ok:true},...others(v,pool,3,o=>mainForm(o.w),o=>wordClass(o.w)===cls&&!s.includes(mainForm(o.w))).map(x=>({t:x,ok:false}))])};
+    },
+    explain(q,v,right){
+      const ex=v.ex.map((e,k)=>`<div class="ex"><div class="j jp">${esc(e[0])} ${spk(e[0],`e/${v.id}-${k}`)}</div><div class="v">${esc(e[1])}</div></div>`).join('');
+      return `<div class="explain ${right?'':'wrong'}">
+        <div class="w jp">${esc(v.w)}${v.r?`<small>「${esc(v.r)}」</small>`:''}${spk(v.r||mainForm(v.w),'w/'+v.id)}</div>
+        <div class="m">${esc(v.m||'')}${v.s?' <span class="en">(～する)</span>':''}</div>
+        <div class="en">${esc(v.en||'')} · Bài ${v.l}</div>${ex}</div>`;
+    },
+    summary: v => ({title:`${esc(v.w)}${v.r?`<small>「${esc(v.r)}」</small>`:''}`, sub:`${esc(shortMeaning(v.m||''))} · Bài ${v.l}`}),
+    autoplay: (q,v) => ({text:v.r||mainForm(v.w), key:'w/'+v.id}),
+  };
+}
+
+/* ---------------- Ngữ pháp ---------------- */
+if(MODULE==='grammar'){
+  const SIZE=20;
+  const groups=[]; for(let a=1;a<=DATA.length;a+=SIZE){ const b=Math.min(a+SIZE-1,DATA.length); groups.push({k:`${a}-${b}`,label:`${a}–${b}`}); }
+  const groupOf = v => groups.find(g=>{ const [a,b]=g.k.split('-').map(Number); return v.no>=a&&v.no<=b; }).k;
+  const frags = p => p.replace(/^（.*?）/,'').replace(/（.*?）|\(.*?\)/g,'～').split(/[～〜…]|・・・/).map(x=>x.trim()).filter(Boolean);
+  const fits = (p, line) => { let pos=0; for(const f of frags(p)){ const i=line.indexOf(f,pos); if(i<0) return false; pos=i+f.length; } return true; };
+  const lineHTML = (v, li, mode) => { // mode: 'blank' | 'mark' | 'plain'
+    const s=v.lines[li][1]; if(mode==='plain'||!v.hit||v.hit[0]!==li) return esc(s);
+    let out='', pos=0;
+    for(const [a,b] of v.hit[1]){ out+=esc(s.slice(pos,a)) + (mode==='blank'?'<span class="blank">&emsp;&emsp;</span>':`<mark>${esc(s.slice(a,b))}</mark>`); pos=b; }
+    return out+esc(s.slice(pos)); };
+  const dialog = (v, mode, withTr, audio) =>
+    (v.ctx.length?`<div class="ctx">${v.ctx.map(esc).join(' ')}</div>`:'') +
+    `<div class="dlg">${v.lines.map((l,li)=>`<div class="ln ${v.hit&&v.hit[0]===li?'focus':''}"><span class="spk">${esc(l[0])}</span><div>
+      <div class="jp">${lineHTML(v,li,mode)}${audio?' '+spk(l[1],v.au&&v.au[li]):''}</div>
+      <div class="tr ${withTr?'':'hidden'}">${esc(l[2])}</div></div></div>`).join('')}</div>`;
+  MODULES.grammar = {
+    key:'grammar', name:'Ngữ pháp', title:'Ôn tập ngữ pháp', quizTitle:'Kiểm tra ngữ pháp', unit:'mẫu',
+    items: DATA,
+    groupTitle:'Chọn nhóm mẫu', groupSub:'117 mẫu ngữ pháp BJT J3~J2 thường gặp, chia nhóm 20 mẫu. Mỗi lượt tối đa 20 câu.',
+    groups, groupOf, wideGroups:true,
+    quick:[['all','Chọn tất cả'],['none','Bỏ chọn']],
+    select: k => k==='all'?groups.map(g=>g.k):[],
+    types:[{k:'dien', label:'Ngữ pháp · 文法', name:'Điền mẫu ngữ pháp', desc:'Chọn mẫu ngữ pháp hợp với chỗ trống trong hội thoại'}],
+    canDo: (t,v) => !!v.hit,
+    build(t,v,pool){
+      const line=v.lines[v.hit[0]][1];
+      const pick = list => pickN(list.filter(o=>o.id!==v.id && !fits(o.p,line)).map(o=>o.p),3,[v.p]);
+      let d=pick(pool); if(d.length<3) d=d.concat(pickN(DATA.filter(o=>o.id!==v.id&&!fits(o.p,line)).map(o=>o.p),3-d.length,[v.p,...d]));
+      return {ask:'Chọn mẫu ngữ pháp thích hợp điền vào chỗ trống.',
+        stem: dialog(v,'blank',false,false) + `<button class="mini" data-reveal>Gợi ý: xem bản dịch</button>`,
+        options: shuffle([{t:v.p,ok:true},...d.map(x=>({t:x,ok:false}))])};
+    },
+    explain(q,v,right){
+      return `<div class="explain ${right?'':'wrong'}"><div class="w jp">${esc(v.p)} <small>Mẫu ${v.no}</small></div>
+        <div class="ex">${dialog(v,'mark',true,true)}</div></div>`;
+    },
+    summary: v => ({title:esc(v.p), sub:`Mẫu ${v.no} · ${esc(v.lines[v.hit?v.hit[0]:0][2])}`}),
+    autoplay: (q,v) => v.hit && v.au ? {text:v.lines[v.hit[0]][1], key:v.au[v.hit[0]]} : null,
+  };
+}
+
+/* ---------------- Kính ngữ ---------------- */
+if(MODULE==='keigo'){
+  const KIND = {verb:'Động từ', biz:'Từ ngữ công sở', err:'Lỗi thường gặp'};
+  const verbs = DATA.filter(v=>v.kind==='verb');
+  const allSon = verbs.flatMap(v=>v.son), allKen = verbs.flatMap(v=>v.ken);
+  const exclusive = v => [...v.son.filter(f=>!v.ken.includes(f)).map(f=>[f,'son']), ...v.ken.filter(f=>!v.son.includes(f)).map(f=>[f,'ken'])];
+  // a form counts as 尊敬語 / 謙譲語 everywhere it appears in the table, so classify only forms that are unambiguous
+  const isOnly = (f,kind) => kind==='son' ? allSon.includes(f)&&!allKen.includes(f) : allKen.includes(f)&&!allSon.includes(f);
+  const LBL = {son:'尊敬語 (Tôn kính ngữ)', ken:'謙譲語 (Khiêm nhường ngữ)', tei:'丁寧語 (Lịch sự ngữ)'};
+  const au = t => (DATA_AUDIO[t]||null);
+  const verbTable = v => `<table class="kt"><tr><th>Thể thường</th><td class="jp">${esc(v.b)}</td></tr>
+      <tr><th>尊敬語<br><small>Tôn kính</small></th><td class="jp">${v.son.map(f=>`${esc(f)}${spk(f,au(f))}`).join('<br>')||'—'}</td></tr>
+      <tr><th>謙譲語<br><small>Khiêm nhường</small></th><td class="jp">${v.ken.map(f=>`${esc(f)}${spk(f,au(f))}`).join('<br>')||'—'}</td></tr>
+      <tr><th>丁寧語<br><small>Lịch sự</small></th><td class="jp">${v.tei.map(esc).join('、')}</td></tr></table>`;
+  MODULES.keigo = {
+    key:'keigo', name:'Kính ngữ', title:'Ôn tập kính ngữ', quizTitle:'Kiểm tra kính ngữ', unit:'mục',
+    items: DATA,
+    groupTitle:'Chọn phần', groupSub:'Theo bảng chia động từ kính ngữ. Mỗi lượt tối đa 20 câu.',
+    groups: Object.entries(KIND).map(([k,l])=>({k,label:l})), groupOf: v=>v.kind, wideGroups:true,
+    quick:[['all','Chọn tất cả'],['none','Bỏ chọn']],
+    select: k => k==='all'?Object.keys(KIND):[],
+    types:[
+      {k:'son', label:'尊敬語 · Tôn kính ngữ', name:'Tôn kính ngữ', desc:'Chọn dạng tôn kính của động từ'},
+      {k:'ken', label:'謙譲語 · Khiêm nhường ngữ', name:'Khiêm nhường ngữ', desc:'Chọn dạng khiêm nhường của động từ'},
+      {k:'loai',label:'Phân loại kính ngữ', name:'Phân loại', desc:'Dạng này là tôn kính hay khiêm nhường?'},
+      {k:'goc', label:'Động từ gốc', name:'Động từ gốc', desc:'Kính ngữ này của động từ nào?'},
+      {k:'biz', label:'Từ ngữ công sở · ビジネス用語', name:'Từ ngữ công sở', desc:'Cách nói trang trọng trong công việc'},
+      {k:'err', label:'Sửa lỗi kính ngữ', name:'Sửa lỗi', desc:'Chọn cách nói đúng'},
+    ],
+    canDo(t,v){
+      if(v.kind==='verb'){
+        if(t==='son') return v.son.length>0;
+        if(t==='ken') return v.ken.length>0;
+        if(t==='loai') return exclusive(v).some(([f,k])=>isOnly(f,k));
+        if(t==='goc') return v.son.concat(v.ken).some(f=>verbs.filter(o=>o.son.includes(f)||o.ken.includes(f)).length===1);
+        return false;
+      }
+      return t===v.kind;
+    },
+    build(t,v,pool){
+      if(t==='son'||t==='ken'){
+        // distractors are forms of the other kind only, so exactly one option is a valid 尊敬語/謙譲語
+        const right=v[t], other=t==='son'?'ken':'son', sameKind=t==='son'?allSon:allKen;
+        const traps=pickN(v[other].filter(f=>!sameKind.includes(f)),2,[]);
+        const rest=pickN(verbs.flatMap(o=>o[other]).filter(f=>!sameKind.includes(f)),3-traps.length,traps);
+        return {ask:`Chọn dạng ${t==='son'?'尊敬語 (tôn kính ngữ)':'謙譲語 (khiêm nhường ngữ)'} của động từ sau.`,
+          stem:`<div class="bigword jp">${esc(v.b)}</div>`,
+          options: shuffle([{t:right[Math.random()*right.length|0],ok:true},...traps.concat(rest).map(x=>({t:x,ok:false}))])};
+      }
+      if(t==='loai'){
+        const [f,k]=shuffle(exclusive(v).filter(([f,k])=>isOnly(f,k)))[0];
+        return {ask:'Dạng sau thuộc loại kính ngữ nào?', optClass:'vi', form:f,
+          stem:`<div class="bigword jp">${esc(f)}</div>`,
+          options:['son','ken','tei'].map(x=>({t:LBL[x],ok:x===k}))};
+      }
+      if(t==='goc'){
+        const f=shuffle(v.son.concat(v.ken).filter(f=>verbs.filter(o=>o.son.includes(f)||o.ken.includes(f)).length===1))[0];
+        const d=pickN(verbs.filter(o=>!o.son.includes(f)&&!o.ken.includes(f)).map(o=>o.b),3,[v.b]);
+        return {ask:'Đây là kính ngữ của động từ nào?', form:f,
+          stem:`<div class="bigword jp">${esc(f)}</div>`,
+          options: shuffle([{t:v.b,ok:true},...d.map(x=>({t:x,ok:false}))])};
+      }
+      if(t==='biz'){
+        const d=pickN(DATA.filter(o=>o.kind==='biz'&&o!==v).map(o=>o.biz),3,[v.biz]);
+        return {ask:'Trong công việc, cách nói trang trọng của từ sau là gì?',
+          stem:`<div class="bigword jp">${esc(v.plain)}</div>`,
+          options: shuffle([{t:v.biz,ok:true},...d.map(x=>({t:x,ok:false}))])};
+      }
+      return {ask:'Câu sau dùng kính ngữ sai. Chọn cách nói đúng.', optClass:'jp long',
+        stem:`<div class="sent jp"><s>${esc(v.wrong)}</s></div>`,
+        options: shuffle([{t:v.right,ok:true},...v.dis.filter(x=>x!==v.wrong).map(x=>({t:x,ok:false}))])};
+    },
+    explain(q,v,right){
+      let body='';
+      if(v.kind==='verb') body=(q.form?`<div class="m jp">${esc(q.form)} ${spk(q.form,au(q.form))}</div>`:'')+verbTable(v)+(v.note?`<div class="en">${esc(v.note)}</div>`:'');
+      if(v.kind==='biz') body=`<div class="m jp">${esc(v.plain)} → <b>${esc(v.biz)}</b> ${spk(v.say,au(v.say))}</div>`;
+      if(v.kind==='err') body=`<div class="m jp">❌ <s>${esc(v.wrong)}</s></div><div class="m jp">⭕ <b>${esc(v.right)}</b> ${spk(v.right.replace(/（.*?）/,''),au(v.right.replace(/（.*?）/,'')))}</div><div class="en" style="font-size:14px">${esc(v.note)}</div>`;
+      return `<div class="explain ${right?'':'wrong'}">${body}</div>`;
+    },
+    summary: v => v.kind==='verb' ? {title:esc(v.b), sub:`尊敬語: ${esc(v.son.join('、')||'—')} · 謙譲語: ${esc(v.ken.join('、')||'—')}`}
+                : v.kind==='biz' ? {title:`${esc(v.plain)} → ${esc(v.biz)}`, sub:KIND.biz}
+                : {title:esc(v.right), sub:`Sai: ${esc(v.wrong)}`},
+    autoplay(q,v){
+      const ok=q.options.find(o=>o.ok).t;
+      if(v.kind==='verb'){ const f=q.form||ok; return {text:f,key:au(f)}; }
+      if(v.kind==='biz') return {text:v.say,key:au(v.say)};
+      const r=v.right.replace(/（.*?）/,''); return {text:r,key:au(r)};
+    },
+  };
+}
+/* ===================== shared engine ===================== */
+const N_Q = 20;
+const MODES = [{k:'weak',label:'Ưu tiên câu yếu'},{k:'rand',label:'Ngẫu nhiên'},{k:'order',label:'Theo thứ tự'}];
+
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem('bjtvocab:'+k); return v?JSON.parse(v):d; }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem('bjtvocab:'+k, JSON.stringify(v)); }catch(e){} }
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+const pickN = (list, n, exclude) => { const seen=new Set(exclude); const out=[]; for(const x of shuffle(list)){ if(out.length>=n) break; if(!x||seen.has(x)) continue; seen.add(x); out.push(x);} return out; };
+
+const M = MODULES[MODULE];
+const ITEMS = M.items;
+const byId = Object.fromEntries(ITEMS.map(v=>[v.id,v]));
+let stats = store.get('stats', {});
+let prefs = Object.assign({groups:[M.groups[0].k], types:M.types.map(t=>t.k), mode:'weak', instant:true, autoplay:true, order:{}},
+                          store.get('prefs:'+M.key, {}));
+prefs.groups = prefs.groups.filter(g=>M.groups.some(x=>x.k===g));
+prefs.types = prefs.types.filter(t=>M.types.some(x=>x.k===t));
+if(!prefs.types.length) prefs.types=M.types.map(t=>t.k);
+const savePrefs = () => store.set('prefs:'+M.key, prefs);
+
+/* ---------- audio: pre-recorded Tokyo voice (ja-JP-NanamiNeural) in audio/, browser voice as fallback ---------- */
+const player = new Audio();
+function speakTTS(text){
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='ja-JP'; u.rate=.9; speechSynthesis.speak(u); }catch(e){}
+}
+function say(text, key){
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(!key){ speakTTS(text); return; }
+  player.onerror=()=>speakTTS(text);
+  player.src='audio/'+key+'.mp3';
+  player.play().catch(err=>{ if(err.name!=='AbortError' && err.name!=='NotAllowedError') speakTTS(text); });
+}
+const spk = (text, key) => `<button class="speak" data-say="${esc(text)}"${key?` data-audio="${esc(key)}"`:''} title="Nghe">🔊</button>`;
+
+/* ---------- session ---------- */
+let S=null, timerId=null;
+const poolFor = groups => ITEMS.filter(v=>groups.includes(M.groupOf(v)));
+function chooseItems(pool, types, mode){
+  const usable=pool.filter(v=>types.some(t=>M.canDo(t,v)));
+  if(mode==='order'){
+    const key=prefs.groups.slice().sort().join(',');
+    let start=(prefs.order&&prefs.order[key])||0;
+    if(start>=usable.length) start=0;
+    const pick=usable.slice(start,start+N_Q);
+    if(pick.length<N_Q) pick.push(...usable.slice(0,Math.min(N_Q,usable.length)-pick.length));
+    prefs.order=prefs.order||{}; prefs.order[key]=start+N_Q>=usable.length?0:start+N_Q; savePrefs();
+    return pick;
+  }
+  if(mode==='weak'){
+    const score=v=>{ const s=stats[v.id]; if(!s) return 1000+Math.random()*100;
+      const days=(Date.now()-(s.t||0))/864e5;
+      return s.w*40 - s.c*15 + Math.min(days,30)*2 + Math.random()*25; };
+    return usable.map(v=>[score(v),v]).sort((a,b)=>b[0]-a[0]).slice(0,N_Q).map(x=>x[1]);
+  }
+  return shuffle(usable).slice(0,N_Q);
+}
+function startSession(items){
+  const pool=poolFor(prefs.groups);
+  const types=prefs.types;
+  const qs=shuffle(items).map((v,i)=>{
+    const ok=types.filter(t=>M.canDo(t,v));
+    const pref=types[i%types.length];
+    const t= ok.includes(pref) ? pref : ok[Math.random()*ok.length|0];
+    return Object.assign(M.build(t,v,pool), {type:t, id:v.id});
+  });
+  S={qs, ans:Array(qs.length).fill(null), cur:0, start:Date.now(), done:false, instant:prefs.instant};
+  show('quiz'); render();
+  clearInterval(timerId); timerId=setInterval(tick,1000); tick();
+}
+function tick(){
+  if(!S) return;
+  const sec=Math.floor(((S.end||Date.now())-S.start)/1000);
+  $('#timer').textContent=String(sec/60|0).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+}
+const locked = i => S.done || (S.instant && S.ans[i]!==null);
+const typeOf = k => M.types.find(t=>t.k===k);
+function render(){
+  const q=S.qs[S.cur], i=S.cur;
+  $('#nav').innerHTML=S.qs.map((qq,k)=>{
+    let c='dot'; if(k===i) c+=' cur';
+    if(S.ans[k]!==null){ if(locked(k)) c+= qq.options[S.ans[k]].ok?' ok':' bad'; else c+=' ans'; }
+    return `<button class="${c}" data-go="${k}">${k+1}</button>`;
+  }).join('');
+  const curDot=$('#nav').children[i]; if(curDot) curDot.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  $('#qn').textContent=`Câu ${i+1}/${S.qs.length}`;
+  $('#qtype').textContent=typeOf(q.type).label;
+  $('#ask').textContent=q.ask;
+  const lk=locked(i);
+  $('#stem').innerHTML=q.stem;
+  $('#stem').classList.toggle('answered', lk);
+  $('#opts').innerHTML=q.options.map((o,k)=>{
+    let c='opt';
+    if(lk){ if(o.ok) c+=' ok'; else if(S.ans[i]===k) c+=' bad'; }
+    else if(S.ans[i]===k) c+=' sel';
+    return `<button class="${c}" data-opt="${k}" ${lk?'disabled':''}><span class="n">${k+1}</span><span class="t ${q.optClass||'jp'}">${esc(o.t)}</span></button>`;
+  }).join('');
+  $('#explain').innerHTML = lk ? M.explain(q, byId[q.id], S.ans[i]!==null && q.options[S.ans[i]].ok) : '';
+  $('#cnt').textContent=`${i+1}/${S.qs.length}`;
+  $('#prevBtn').disabled = i===0;
+  const last = i===S.qs.length-1;
+  $('#nextBtn').innerHTML = S.done ? (last?'Xem kết quả':'Next &nbsp;›') : (last?'Nộp bài':'Next &nbsp;›');
+}
+function choose(k){
+  const i=S.cur; if(locked(i) || k>=S.qs[i].options.length) return;
+  S.ans[i]=k;
+  if(S.instant){
+    record(S.qs[i], k);
+    const a = prefs.autoplay && M.autoplay && M.autoplay(S.qs[i], byId[S.qs[i].id]);
+    if(a) say(a.text, a.key);
+  }
+  render();
+}
+function record(q,k){
+  const s=stats[q.id]||{c:0,w:0,t:0};
+  if(q.options[k].ok) s.c++; else s.w++;
+  s.t=Date.now(); stats[q.id]=s; store.set('stats',stats);
+}
+function go(i){ if(!S||i<0||i>=S.qs.length) return; S.cur=i; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function next(){
+  if(S.cur<S.qs.length-1) return go(S.cur+1);
+  if(S.done) return showResult();
+  const blank=S.ans.filter(a=>a===null).length;
+  if(blank && !confirm(`Còn ${blank} câu chưa trả lời. Nộp bài luôn?`)) return;
+  finish();
+}
+function finish(){
+  if(!S.instant) S.qs.forEach((q,i)=>{ if(S.ans[i]!==null) record(q,S.ans[i]); });
+  S.done=true; S.end=Date.now(); clearInterval(timerId); tick();
+  showResult();
+}
+let rFilter='all';
+function showResult(){
+  show('result');
+  const total=S.qs.length, ok=S.qs.filter((q,i)=>S.ans[i]!==null&&q.options[S.ans[i]].ok).length;
+  const pct=Math.round(ok/total*100);
+  const sec=Math.floor((S.end-S.start)/1000);
+  const C=2*Math.PI*52;
+  $('#scoreBox').innerHTML=`
+    <svg class="ring" viewBox="0 0 130 130"><circle cx="65" cy="65" r="52" fill="none" stroke="var(--line-2)" stroke-width="12"/>
+    <circle cx="65" cy="65" r="52" fill="none" stroke="${pct>=80?'var(--ok)':pct>=50?'var(--ink)':'var(--bad)'}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C*pct/100} ${C}" transform="rotate(-90 65 65)"/>
+    <text x="65" y="72" text-anchor="middle" font-size="26" font-weight="700" fill="var(--ink)">${ok}/${total}</text></svg>
+    <div><h2>${pct>=80?'Tuyệt vời!':pct>=50?'Khá ổn!':'Cố gắng thêm nhé!'}</h2>
+    <p>Đúng ${ok} / ${total} câu (${pct}%) · Thời gian ${sec/60|0} phút ${sec%60} giây</p>
+    <p style="font-size:13px;color:var(--muted)">Bấm vào từng câu bên dưới để xem lại.</p></div>`;
+  $('#retryWrong').disabled = ok===total;
+  $('#rfilters').innerHTML=[['all','Tất cả'],['bad','Câu sai'],['ok','Câu đúng']].map(([k,l])=>`<button class="pill ${rFilter===k?'on':''}" data-rf="${k}">${l}</button>`).join('');
+  $('#rlist').innerHTML=S.qs.map((q,i)=>{
+    const v=byId[q.id]; const a=S.ans[i]; const good=a!==null&&q.options[a].ok;
+    if(rFilter==='bad'&&good) return ''; if(rFilter==='ok'&&!good) return '';
+    const sm=M.summary(v);
+    return `<div class="ritem" data-review="${i}"><span class="mk ${good?'ok':'bad'}">${good?'✓':'✗'}</span>
+      <div><div class="w jp">${sm.title}</div>
+      <div class="m">${sm.sub} · <span style="color:var(--muted)">${typeOf(q.type).name}</span></div>
+      ${good?'':`<div class="yours">Bạn chọn: ${a===null?'(bỏ trống)':esc(q.options[a].t)} → Đáp án: ${esc(q.options.find(o=>o.ok).t)}</div>`}</div></div>`;
+  }).join('') || '<p class="stat">Không có câu nào.</p>';
+}
+
+/* ---------- setup ---------- */
+function show(id){
+  ['setup','quiz','result'].forEach(s=>$('#'+s).classList.toggle('hidden',s!==id));
+  $('#bottom').classList.toggle('hidden', id!=='quiz');
+  $('#title').textContent = id==='setup'?M.title:id==='quiz'?M.quizTitle:'Kết quả';
+  window.scrollTo(0,0);
+}
+function renderSetup(){
+  $('#groupTitle').textContent=M.groupTitle;
+  $('#groupSub').textContent=M.groupSub;
+  $('#quick').innerHTML=M.quick.map(([k,l])=>`<button class="mini" data-sel="${k}">${l}</button>`).join('');
+  $('#lessons').className = M.wideGroups ? 'lessons wide' : 'lessons';
+  $('#lessons').innerHTML=M.groups.map(g=>{
+    const ws=ITEMS.filter(v=>M.groupOf(v)===g.k); const known=ws.filter(v=>stats[v.id]&&stats[v.id].c>0).length;
+    return `<button class="lchip ${prefs.groups.includes(g.k)?'on':''}" data-l="${g.k}"><b>${g.label}</b><small>${known}/${ws.length}</small><div class="bar"><i style="width:${known/ws.length*100}%"></i></div></button>`;
+  }).join('');
+  $('#types').innerHTML=M.types.map(t=>`<button class="tcard ${prefs.types.includes(t.k)?'on':''}" data-t="${t.k}"><b>${t.name}</b><span>${t.desc}</span></button>`).join('');
+  $('#modes').innerHTML=MODES.map(m=>`<button class="pill ${prefs.mode===m.k?'on':''}" data-m="${m.k}">${m.label}</button>`).join('');
+  $('#instant').checked=prefs.instant;
+  $('#autoplay').checked=prefs.autoplay;
+  const pool=poolFor(prefs.groups).filter(v=>prefs.types.some(t=>M.canDo(t,v)));
+  const seen=pool.filter(v=>stats[v.id]).length, weak=pool.filter(v=>stats[v.id]&&stats[v.id].w>stats[v.id].c).length;
+  $('#poolStat').innerHTML=`<b>${pool.length}</b> ${M.unit} · đã ôn <b>${seen}</b> · hay sai <b>${weak}</b>`;
+  $('#startBtn').textContent=`Bắt đầu ${Math.min(N_Q,pool.length)} câu`;
+  $('#startBtn').disabled = pool.length<1 || !prefs.types.length;
+  savePrefs();
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button,[data-review]'); if(!t) return;
+  const d=t.dataset;
+  if(d.l!==undefined){ const l=d.l; prefs.groups=prefs.groups.includes(l)?prefs.groups.filter(x=>x!==l):[...prefs.groups,l]; renderSetup(); }
+  else if(d.sel){ prefs.groups = M.select(d.sel); renderSetup(); }
+  else if(d.t){ prefs.types=prefs.types.includes(d.t)?prefs.types.filter(x=>x!==d.t):[...prefs.types,d.t]; renderSetup(); }
+  else if(d.m){ prefs.mode=d.m; renderSetup(); }
+  else if(d.go!==undefined){ go(+d.go); }
+  else if(d.opt!==undefined){ choose(+d.opt); }
+  else if(d.say){ say(d.say, d.audio); }
+  else if(d.reveal!==undefined){ document.querySelectorAll('#stem .tr').forEach(x=>x.classList.remove('hidden')); t.remove(); }
+  else if(d.rf){ rFilter=d.rf; showResult(); }
+  else if(d.review!==undefined){ show('quiz'); go(+d.review); }
+});
+$('#instant').addEventListener('change',e=>{ prefs.instant=e.target.checked; savePrefs(); });
+$('#autoplay').addEventListener('change',e=>{ prefs.autoplay=e.target.checked; savePrefs(); });
+$('#startBtn').onclick=()=>startSession(chooseItems(poolFor(prefs.groups),prefs.types,prefs.mode));
+$('#prevBtn').onclick=()=>go(S.cur-1);
+$('#nextBtn').onclick=next;
+$('#newRound').onclick=()=>{ rFilter='all'; startSession(chooseItems(poolFor(prefs.groups),prefs.types,prefs.mode)); };
+$('#retryWrong').onclick=()=>{ rFilter='all'; startSession(S.qs.filter((q,i)=>!(S.ans[i]!==null&&q.options[S.ans[i]].ok)).map(q=>byId[q.id])); };
+$('#toSetup').onclick=()=>{ renderSetup(); show('setup'); };
+$('#backBtn').onclick=()=>{
+  if(!$('#setup').classList.contains('hidden')){ location.href='index.html'; return; }
+  if(!$('#quiz').classList.contains('hidden') && S && !S.done && S.ans.some(a=>a!==null) && !confirm('Thoát bài đang làm?')) return;
+  clearInterval(timerId); renderSetup(); show('setup');
+};
+$('#resetBtn').onclick=()=>{
+  if(!confirm(`Xoá lịch sử ôn tập phần ${M.name} trên trình duyệt này?`)) return;
+  for(const v of ITEMS) delete stats[v.id];
+  store.set('stats',stats); renderSetup();
+};
+$('#themeBtn').onclick=()=>{
+  const r=document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme = dark?'light':'dark'; store.set('theme',r.dataset.theme);
+};
+document.addEventListener('keydown',e=>{
+  if($('#quiz').classList.contains('hidden')||!S) return;
+  if(e.target.tagName==='INPUT') return;
+  if(/^[1-9]$/.test(e.key)) choose(+e.key-1);
+  else if(e.key==='ArrowRight'||e.key==='Enter') next();
+  else if(e.key==='ArrowLeft') go(S.cur-1);
+});
+document.title = M.title + ' BJT';
+renderSetup();
+
+</script>
+</body>
+</html>
