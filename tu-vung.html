@@ -207,9 +207,6 @@ mark{background:none;color:inherit;font-weight:700;text-decoration:underline;tex
       <div class="row" style="margin-top:16px">
         <label class="toggle"><input type="checkbox" id="instant"> Hiện đáp án ngay sau khi chọn</label>
       </div>
-      <div class="row" style="margin-top:8px">
-        <label class="toggle"><input type="checkbox" id="autoplay"> Tự đọc (giọng Tokyo) sau khi trả lời</label>
-      </div>
     </div>
     <div class="panel start">
       <div class="stat" id="poolStat"></div>
@@ -501,7 +498,7 @@ const M = MODULES[MODULE];
 const ITEMS = M.items;
 const byId = Object.fromEntries(ITEMS.map(v=>[v.id,v]));
 let stats = store.get('stats', {});
-let prefs = Object.assign({groups:[M.groups[0].k], types:M.types.map(t=>t.k), mode:'weak', instant:true, autoplay:true, order:{}},
+let prefs = Object.assign({groups:[M.groups[0].k], types:M.types.map(t=>t.k), mode:'weak', instant:true, order:{}},
                           store.get('prefs:'+M.key, {}));
 prefs.groups = prefs.groups.filter(g=>M.groups.some(x=>x.k===g));
 prefs.types = prefs.types.filter(t=>M.types.some(x=>x.k===t));
@@ -593,11 +590,7 @@ function render(){
 function choose(k){
   const i=S.cur; if(locked(i) || k>=S.qs[i].options.length) return;
   S.ans[i]=k;
-  if(S.instant){
-    record(S.qs[i], k);
-    const a = prefs.autoplay && M.autoplay && M.autoplay(S.qs[i], byId[S.qs[i].id]);
-    if(a) say(a.text, a.key);
-  }
+  if(S.instant) record(S.qs[i], k);
   render();
 }
 function record(q,k){
@@ -664,7 +657,6 @@ function renderSetup(){
   $('#types').innerHTML=M.types.map(t=>`<button class="tcard ${prefs.types.includes(t.k)?'on':''}" data-t="${t.k}"><b>${t.name}</b><span>${t.desc}</span></button>`).join('');
   $('#modes').innerHTML=MODES.map(m=>`<button class="pill ${prefs.mode===m.k?'on':''}" data-m="${m.k}">${m.label}</button>`).join('');
   $('#instant').checked=prefs.instant;
-  $('#autoplay').checked=prefs.autoplay;
   const pool=poolFor(prefs.groups).filter(v=>prefs.types.some(t=>M.canDo(t,v)));
   const seen=pool.filter(v=>stats[v.id]).length, weak=pool.filter(v=>stats[v.id]&&stats[v.id].w>stats[v.id].c).length;
   $('#poolStat').innerHTML=`<b>${pool.length}</b> ${M.unit} · đã ôn <b>${seen}</b> · hay sai <b>${weak}</b>`;
@@ -687,7 +679,6 @@ document.addEventListener('click',e=>{
   else if(d.review!==undefined){ show('quiz'); go(+d.review); }
 });
 $('#instant').addEventListener('change',e=>{ prefs.instant=e.target.checked; savePrefs(); });
-$('#autoplay').addEventListener('change',e=>{ prefs.autoplay=e.target.checked; savePrefs(); });
 $('#startBtn').onclick=()=>startSession(chooseItems(poolFor(prefs.groups),prefs.types,prefs.mode));
 $('#prevBtn').onclick=()=>go(S.cur-1);
 $('#nextBtn').onclick=next;
