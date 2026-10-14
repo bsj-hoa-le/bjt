@@ -574,6 +574,8 @@ let stats = store.get('stats', {});
 let prefs = Object.assign({groups:[M.groups[0].k], types:M.types.map(t=>t.k), mode:'weak', instant:true, order:{}},
                           store.get('prefs:'+M.key, {}));
 prefs.groups = prefs.groups.filter(g=>M.groups.some(x=>x.k===g));
+// ?nhom=N (e.g. from the listening page) preselects one lesson/group
+{ const g=new URLSearchParams(location.search).get('nhom'); if(g && M.groups.some(x=>x.k===g)) prefs.groups=[g]; }
 prefs.types = prefs.types.filter(t=>M.types.some(x=>x.k===t));
 if(!prefs.types.length) prefs.types=M.types.map(t=>t.k);
 const savePrefs = () => store.set('prefs:'+M.key, prefs);

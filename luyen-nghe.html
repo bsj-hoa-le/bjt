@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luyện nghe BJT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f5f0; --card:#ffffff; --ink:#1d2b2a; --ink-2:#4b5a58; --muted:#87928f;
+  --line:#d9d4c7; --line-2:#ebe7dc; --accent:#0e7c6b; --accent-ink:#ffffff; --accent-soft:#e3f1ee;
+  --hl:#f3c94f; --ok:#178a53; --ok-bg:#e5f4ea; --bad:#c43d2f; --bad-bg:#fbeae7;
+  --shadow:0 1px 2px rgba(29,43,42,.06),0 8px 28px rgba(29,43,42,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141a19; --card:#1c2423; --ink:#e8eeec; --ink-2:#b4c0bd; --muted:#84918e;
+    --line:#33403e; --line-2:#263130; --accent:#3fb5a0; --accent-ink:#0d1716; --accent-soft:#1f3a35;
+    --hl:#d9b13f; --ok:#4cc27e; --ok-bg:#183326; --bad:#f07468; --bad-bg:#3a1f1d;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141a19; --card:#1c2423; --ink:#e8eeec; --ink-2:#b4c0bd; --muted:#84918e;
+  --line:#33403e; --line-2:#263130; --accent:#3fb5a0; --accent-ink:#0d1716; --accent-soft:#1f3a35;
+  --hl:#d9b13f; --ok:#4cc27e; --ok-bg:#183326; --bad:#f07468; --bad-bg:#3a1f1d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro","Noto Sans JP",system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-weight:400}
+.jp{font-family:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.hidden{display:none!important}
+
+/* header */
+.top{display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line-2);background:var(--bg);position:sticky;top:0;z-index:5}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:"Noto Sans JP",sans-serif;font-weight:700;font-size:19px;text-decoration:none;flex:0 0 auto}
+.crumb{display:flex;flex-direction:column;min-width:0}
+.crumb small{font-size:11.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.crumb h1{font-size:17px;font-weight:600;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .spacer{flex:1}
+.back{background:none;border:1px solid var(--line);border-radius:9px;padding:6px 12px;font-size:13.5px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.back:hover{border-color:var(--ink-2)}
+.iconbtn{background:none;border:1px solid var(--line);border-radius:9px;padding:6px 10px;font-size:13px;color:var(--ink-2)}
+
+.wrap{max-width:1120px;margin:0 auto;padding:24px 16px 80px}
+.col{max-width:820px;margin:0 auto}
+
+/* setup */
+.panel{background:var(--card);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:16px}
+.panel h2{font-size:15px;margin:0 0 4px;font-weight:600;display:flex;align-items:center;gap:8px}
+.panel h2::before{content:"";width:6px;height:16px;border-radius:2px;background:var(--accent)}
+.panel .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px}
+.lessons.wide{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.lchip{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:7px 4px 6px;text-align:center}
+.lchip b{display:block;font-size:14px;font-weight:600}
+.lchip small{display:block;font-size:10.5px;color:var(--muted);margin-top:1px}
+.lchip .bar{height:3px;border-radius:2px;background:var(--line-2);margin:5px 4px 0;overflow:hidden}
+.lchip .bar i{display:block;height:100%;background:var(--accent)}
+.lchip.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pill{border:1px solid var(--line);background:none;border-radius:8px;padding:7px 14px;font-size:13.5px}
+.pill.on{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.mini{border:0;background:none;color:var(--accent);font-size:13px;padding:4px 6px;font-weight:500}
+.mini:hover{text-decoration:underline}
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px}
+.tcard{border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:none;text-align:left;position:relative;padding-left:38px}
+.tcard::before{content:"";position:absolute;left:13px;top:13px;width:15px;height:15px;border-radius:4px;border:1.5px solid var(--line)}
+.tcard.on{border-color:var(--accent);background:var(--accent-soft)}
+.tcard.on::before{background:var(--accent);border-color:var(--accent);box-shadow:inset 0 0 0 3px var(--card)}
+.tcard b{display:block;font-size:14px;font-weight:600}
+.tcard span{font-size:12px;color:var(--muted)}
+.start{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:12px 26px;font-weight:600;font-size:15.5px;background:var(--accent);color:var(--accent-ink)}
+.btn:hover:not(:disabled){filter:brightness(1.07)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--ink)}
+.stat{color:var(--ink-2);font-size:14px}
+.stat b{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2)}
+.toggle input{accent-color:var(--accent)}
+
+/* quiz: sidebar + main */
+.quiz-layout{display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:start}
+.side{position:sticky;top:86px;background:var(--card);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:18px}
+.side .pos{font-size:13px;color:var(--muted)}
+.side .pos b{font-size:26px;color:var(--ink);font-weight:600;margin-right:2px}
+.seg{display:flex;gap:3px;margin:10px 0 14px}
+.seg i{flex:1;height:6px;border-radius:2px;background:var(--line-2)}
+.seg i.ans{background:var(--ink-2)} .seg i.ok{background:var(--ok)} .seg i.bad{background:var(--bad)}
+.seg i.cur{outline:2px solid var(--accent);outline-offset:1px}
+.metrics{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:6px;margin-bottom:14px}
+.metric{background:var(--bg);border-radius:8px;padding:7px 8px;text-align:center}
+.metric span{display:block;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+.metric b{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.metric.ok b{color:var(--ok)} .metric.bad b{color:var(--bad)}
+.side details summary{font-size:12.5px;color:var(--ink-2);cursor:pointer;margin-bottom:8px;list-style:none}
+.side details summary::before{content:"▸ "} .side details[open] summary::before{content:"▾ "}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:14px}
+.sq{aspect-ratio:1;border-radius:6px;border:1px solid var(--line);background:none;font-size:12.5px;font-weight:500;color:var(--ink-2);padding:0}
+.sq.cur{border:2px solid var(--accent);color:var(--ink)}
+.sq.ans{background:var(--line-2)}
+.sq.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.sq.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.side .btn{width:100%;padding:10px}
+
+.qcard{background:var(--card);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:20px 26px 24px;position:relative;overflow:hidden}
+.qcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+.qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.chip{background:var(--accent-soft);color:var(--accent);font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:6px}
+.qno{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.qcard .ask{font-size:14.5px;color:var(--ink-2);margin-bottom:12px}
+.sent{font-size:24px;line-height:1.8}
+.sent u{text-decoration:none;background:linear-gradient(transparent 62%,var(--hl) 62%);padding:0 2px;font-weight:700}
+.sent.sub{font-size:17px;margin-top:10px;color:var(--ink-2)}
+.blank{display:inline-block;min-width:4.2em;border-bottom:2px dashed var(--accent);margin:0 .2em;background:var(--accent-soft);border-radius:4px 4px 0 0}
+.bigword{font-size:40px;font-weight:700;letter-spacing:.02em}
+.bigword u{text-decoration:none;background:linear-gradient(transparent 62%,var(--hl) 62%);padding:0 4px}
+.bigvi{font-size:21px;font-weight:600;line-height:1.5}
+.hint{color:var(--muted);font-size:13.5px;margin-top:6px}
+.speak{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--ink-2);margin-left:6px;vertical-align:middle}
+.speak:hover{border-color:var(--accent)}
+
+.opts{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
+.opts.grid2{grid-template-columns:1fr 1fr}
+.opt{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:14px 16px;text-align:left;min-height:62px;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.opt .n{flex:0 0 auto;width:30px;height:30px;border-radius:7px;background:var(--line-2);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;color:var(--ink-2)}
+.opt .t{font-size:21px;line-height:1.4}
+.opt .t.vi{font-size:16px;font-family:"Be Vietnam Pro",sans-serif}
+.opt .t.long{font-size:16.5px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel .n{background:var(--accent);color:var(--accent-ink)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.ok .n{background:var(--ok);color:#fff}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt.bad .n{background:var(--bad);color:#fff}
+.opt:disabled{cursor:default}
+
+.explain{margin-top:14px;background:var(--card);border:1px solid var(--line-2);border-radius:12px;padding:14px 18px}
+.explain .verdict{font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ok)}
+.explain.wrong .verdict{color:var(--bad)}
+.explain .w{font-size:21px;font-weight:700}
+.explain .w small{font-size:14.5px;font-weight:500;color:var(--ink-2);margin-left:8px}
+.explain .m{margin:6px 0 2px;font-size:15px;line-height:1.55}
+.explain .en{color:var(--muted);font-size:13px}
+.explain .ex{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.explain .ex .j{font-size:16.5px;line-height:1.6}
+.explain .ex .v{font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.explain s, .sent s{text-decoration-color:var(--bad);text-decoration-thickness:2px}
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px}
+.linkbtn{background:none;border:0;color:var(--ink-2);font-size:14px;padding:8px 4px}
+.linkbtn:disabled{opacity:.35;cursor:default}
+.kbd{font-size:12px;color:var(--muted)}
+
+/* grammar dialog */
+.ctx{color:var(--muted);font-size:13.5px;margin-bottom:8px}
+.dlg{display:flex;flex-direction:column;gap:12px}
+.ln{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.ln .spk{width:26px;height:26px;border-radius:6px;background:var(--line-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12.5px;margin-top:5px}
+.ln .jp{font-size:19px;line-height:1.75}
+.ln .tr{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin-top:2px}
+.explain .ln .jp{font-size:16.5px}
+mark{background:linear-gradient(transparent 62%,var(--hl) 62%);color:inherit;font-weight:700;padding:0 2px}
+
+/* keigo table */
+.kt{border-collapse:collapse;width:100%;margin-top:10px;font-size:15.5px}
+.kt th{text-align:left;font-weight:600;color:var(--ink-2);padding:8px 12px 8px 0;width:118px;vertical-align:top;font-size:13.5px}
+.kt th small{font-weight:400;color:var(--muted)}
+.kt td{padding:8px 0;border-top:1px solid var(--line-2);line-height:1.9}
+.kt tr:first-child td{border-top:0}
+
+/* results */
+.score{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+.bignum{font-size:54px;font-weight:700;line-height:1;color:var(--accent)}
+.bignum small{font-size:22px;color:var(--muted);font-weight:500}
+.score h2::before{display:none}
+.score h2{font-size:22px;margin:0}
+.score p{margin:6px 0 0;color:var(--ink-2);font-size:14px}
+.scorebar{height:8px;border-radius:4px;background:var(--line-2);overflow:hidden;margin-top:10px;width:260px;max-width:100%}
+.scorebar i{display:block;height:100%;background:var(--accent)}
+.rlist{display:flex;flex-direction:column;gap:8px}
+.ritem{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;border:1px solid var(--line-2);border-radius:10px;padding:11px 14px;cursor:pointer}
+.ritem:hover{border-color:var(--line)}
+.ritem .mk{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:13px}
+.ritem .mk.ok{background:var(--ok)} .ritem .mk.bad{background:var(--bad)}
+.ritem .w{font-size:18px;font-weight:600}
+.ritem .w small{font-weight:400;color:var(--ink-2);font-size:13.5px;margin-left:6px}
+.ritem .m{font-size:13.5px;color:var(--ink-2);margin-top:2px}
+.ritem .yours{font-size:12.5px;color:var(--bad);margin-top:4px}
+.filters{display:flex;gap:6px;margin-bottom:12px}
+
+@media (max-width:860px){
+  .quiz-layout{grid-template-columns:1fr;gap:12px}
+  /* compact tracker: position + metrics on one line, question numbers in one swipeable row */
+  .side{position:static;padding:10px 12px;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px 10px}
+  .side .pos b{font-size:19px}
+  .seg{display:none}
+  .metrics{display:flex;justify-content:flex-end;gap:5px;margin:0}
+  .metric{display:flex;align-items:baseline;gap:5px;padding:4px 8px}
+  .metric span{display:none}
+  .metric b{font-size:13px}
+  .metric:first-child b::before{content:"⏱ ";font-weight:400}
+  .metric.ok b::before{content:"✓ "} .metric.bad b::before{content:"✗ "}
+  #navBox{grid-column:1/-1}
+  .side details summary{display:none}
+  .nav{display:flex;overflow-x:auto;gap:5px;margin:0;padding:2px 1px 8px;scrollbar-width:thin;scrollbar-color:var(--line) transparent;cursor:grab;user-select:none}
+  .nav.dragging{cursor:grabbing}
+  .nav::-webkit-scrollbar{height:4px} .nav::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+  .sq{flex:0 0 30px;height:30px;aspect-ratio:auto;font-size:12px}
+  .side .btn{display:none}
+}
+@media (max-width:640px){
+  .top{padding:10px 14px}
+  .wrap{padding:16px 12px 60px}
+  .qcard{padding:16px 16px 18px}
+  .sent{font-size:19px}
+  .bigword{font-size:30px}
+  .opts.grid2{grid-template-columns:1fr}
+  .opt{padding:12px;min-height:54px}
+  .opt .t{font-size:18px}
+  .opt .t.vi{font-size:15px}
+  .ln .jp{font-size:16.5px}
+  .kbd{display:none}
+}
+
+.player{background:var(--card);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.frame{position:relative;aspect-ratio:16/9;background:#000}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.pinfo{padding:16px 20px 18px}
+.pinfo .bai{font-size:12.5px;font-weight:600;color:var(--accent);letter-spacing:.04em}
+.pinfo h2{font-size:20px;margin:4px 0 4px;font-weight:600;line-height:1.4}
+.pinfo .yt{font-size:13px;color:var(--muted)}
+.pinfo .yt a{color:var(--ink-2)}
+.pact{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pact .btn{padding:10px 16px;font-size:14px}
+.pact a.btn{text-decoration:none;display:inline-flex;align-items:center}
+.howto{font-size:13.5px;color:var(--ink-2);background:var(--accent-soft);border-radius:10px;padding:10px 14px;margin-top:14px;line-height:1.6}
+.listhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:26px 0 12px}
+.listhead h3{margin:0;font-size:16px;font-weight:600}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.vcard{background:var(--card);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;transition:border-color .12s}
+.vcard:hover{border-color:var(--accent)}
+.vcard.cur{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.thumb{position:relative;aspect-ratio:16/9;background:var(--line-2)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .len{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.75);color:#fff;font-size:11.5px;padding:1px 6px;border-radius:4px}
+.thumb .done{position:absolute;left:6px;top:6px;background:var(--ok);color:#fff;font-size:11px;font-weight:600;padding:2px 7px;border-radius:4px}
+.vbody{padding:9px 12px 12px}
+.vbody b{font-size:12.5px;color:var(--accent)}
+.vbody div{font-size:13.5px;line-height:1.45;margin-top:2px}
+.channel{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:22px;background:var(--card);border:1px solid var(--line-2);border-radius:12px;padding:14px 18px}
+.channel a{color:var(--accent);font-weight:600;text-decoration:none}
+@media (max-width:640px){ .pinfo{padding:14px} .pinfo h2{font-size:17px} .vgrid{grid-template-columns:1fr 1fr;gap:8px} .vbody div{font-size:12.5px} }
+</style>
+<script>try{const t=localStorage.getItem('bjtvocab:theme');if(t)document.documentElement.dataset.theme=JSON.parse(t);}catch(e){}</script>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="index.html" title="Trang chủ">練</a>
+  <div class="crumb"><small>BJT · Luyện tập</small><h1>Luyện nghe</h1></div>
+  <span class="spacer"></span>
+  <a class="back" href="index.html" style="text-decoration:none"><span aria-hidden="true">←</span> Trang chủ</a>
+  <button class="iconbtn" id="themeBtn" title="Đổi giao diện sáng/tối">◐</button>
+</header>
+<main class="wrap"><div class="col" style="max-width:960px">
+  <section class="player">
+    <div class="frame" id="frame"></div>
+    <div class="pinfo">
+      <div class="bai" id="pBai"></div>
+      <h2 id="pTitle"></h2>
+      <div class="yt" id="pYt"></div>
+      <div class="pact">
+        <button class="btn ghost" id="prevBtn">← Bài trước</button>
+        <a class="btn" id="quizBtn">Ôn từ vựng bài này</a>
+        <button class="btn ghost" id="nextBtn">Bài sau →</button>
+      </div>
+      <div class="howto">Cách học: 1) Nghe hết một lượt, đừng dừng. 2) Nghe lại và nhắc theo từng câu. 3) Bấm “Ôn từ vựng bài này” để kiểm tra 50 từ của bài.</div>
+    </div>
+  </section>
+
+  <div class="listhead"><h3>Danh sách bài</h3><div class="row" id="parts"></div></div>
+  <div class="vgrid" id="grid"></div>
+
+  <div class="channel"><span>Xem toàn bộ video trên kênh YouTube</span><a href="https://www.youtube.com/@nihongo-rakuraku" target="_blank" rel="noopener">nihongo-rakuraku ↗</a></div>
+</div></main>
+<script>
+const LISTEN = {"channel":"https://www.youtube.com/@nihongo-rakuraku","playlists":{"1":{"id":"PLZDNmp1OEms4","title":"Từ vựng BJT 2200 từ qua hội thoại phần 1 | Tiếng Nhật thương mại J3~J2"},"2":{"id":"PLNrqaK6DJfK0","title":"Từ vựng BJT 2200 từ qua hội thoại phần 2  | Tiếng Nhật thương mại J3~J2"},"3":{"id":"PLFSOam0Xz9xg","title":"Từ vựng BJT 2200 từ qua hội thoại phần 3 | Tiếng Nhật thương mại J3~J2"},"4":{"id":"PLKlKcIH7X6tM","title":"Từ vựng BJT 2200 từ qua hội thoại phần 4 | Tiếng Nhật thương mại J3~J2"}},"videos":[{"bai":1,"id":"iVapAjjEqCA","title":"BJT Bài 1 | Họp sáng dự án EC app: 50 từ  _English","topic":"Họp sáng dự án EC app","part":1,"len":"3:51"},{"bai":2,"id":"lFY9O6S8fS8","title":"BJT Bài 2 | Họp sự kiện ra mắt + chuyển văn phòng: 50 từ English","topic":"Họp sự kiện ra mắt + chuyển văn phòng","part":1,"len":"2:33"},{"bai":3,"id":"msSEHo5ftxI","title":"BJT Bài 3 | Họp bán hàng: 50 từ + kính ngữ (いたす・参る)","topic":"Họp bán hàng","part":1,"len":"2:02"},{"bai":4,"id":"wtzSCu8gdyo","title":"BJT Bài 4 | Họp bán buôn khách lớn + triển lãm: 50 từ + kính ngữ (伺う・申す)","topic":"Họp bán buôn khách lớn + triển lãm","part":1,"len":"2:18"},{"bai":5,"id":"2FQ5_7pS-W0","title":"BJT Bài 5 | Họp khai trương cửa hàng vốn ngoại: 50 từ + kính ngữ (存じ・拝読)","topic":"Họp khai trương cửa hàng vốn ngoại","part":1,"len":"2:13"},{"bai":6,"id":"Rlx082J5YkU","title":"BJT Bài 6 | Họp mở rộng nhà máy + catalog: 50 từ + kính ngữ (拝借・差し上げる)","topic":"Họp mở rộng nhà máy + catalog","part":1,"len":"1:47"},{"bai":7,"id":"w7VpTACWF_4","title":"BJT Bài 7 | Họp cổ đông + sản phẩm chủ lực: 50 từ + kính ngữ (拝受・申し上げる)","topic":"Họp cổ đông + sản phẩm chủ lực","part":1,"len":"2:12"},{"bai":8,"id":"TrEmmVJjdTc","title":"BJT第8課｜品質管理システム導入会議：50語＋敬語","topic":"品質管理システム導入会議","part":1,"len":"2:42"},{"bai":9,"id":"06Nghtzdu2c","title":"BJT Bài 9 | Họp chốt trước khai trương: 50 từ + kính ngữ (承る・なさる)","topic":"Họp chốt trước khai trương","part":1,"len":"4:35"},{"bai":10,"id":"QQRoD6_oLCA","title":"BJT Bài 10 | Họp cắt giảm chi phí + web EC: 50 từ + kính ngữ (拝聴)","topic":"Họp cắt giảm chi phí + web EC","part":1,"len":"3:39"},{"bai":11,"id":"xFK0RdsKHQw","title":"BJT Bài 11 | Họp khẩn thu hồi hàng lỗi: 50 từ + kính ngữ (お詫び・賜る)","topic":"Họp khẩn thu hồi hàng lỗi","part":2,"len":"3:39"},{"bai":12,"id":"MSB0kDtQwBc","title":"BJT Bài 12 | Họp đối sách 原価高騰 giảm lãi: 50 từ + kính ngữ (ご教示)","topic":"Họp đối sách 原価高騰 giảm lãi","part":2,"len":"3:28"},{"bai":13,"id":"IkvWPtS8nYc","title":"BJT Bài 13 | Họp 原油高騰 và 値上げ: 50 từ + kính ngữ (ご臨席)","topic":"Họp 原油高騰 và 値上げ","part":2,"len":"4:08"},{"bai":14,"id":"JJddlZTTJw8","title":"BJT Bài 14 | Họp ra mắt hàng 国産: 50 từ + kính ngữ (ご高覧)","topic":"Họp ra mắt hàng 国産","part":2,"len":"3:00"},{"bai":15,"id":"mBPC7PVMekE","title":"BJT Bài 15 | Họp催事 mùa thu + bán live EC: 50 từ + kính ngữ (召し上がる)","topic":"Họp催事 mùa thu + bán live EC","part":2,"len":"2:47"},{"bai":16,"id":"s4Z6eeoVyZM","title":"BJT Bài 16 | Họp コスト削減 sau tái tổ chức: 50 từ + kính ngữ (ご容赦)","topic":"Họp コスト削減 sau tái tổ chức","part":2,"len":"3:12"},{"bai":17,"id":"GwnOI4Kwi3I","title":"BJT Bài 17 | Họp 新規参入 hàng 産地直送: 50 từ + kính ngữ (ご一読)","topic":"Họp 新規参入 hàng 産地直送","part":2,"len":"2:33"},{"bai":18,"id":"vNAh1yz0Wow","title":"BJT Bài 18 | Họp 人手不足 vực dậy chi nhánh: 50 từ + kính ngữ (ご指導)","topic":"Họp 人手不足 vực dậy chi nhánh","part":2,"len":"2:56"},{"bai":19,"id":"9-e-WSoodr8","title":"BJT Bài 19 | Họp 下期 tuyển 若年層: 50 từ + kính ngữ (お見えになる)","topic":"Họp 下期 tuyển 若年層","part":2,"len":"2:57"},{"bai":20,"id":"o_b_kwXf5HM","title":"BJT Bài 20 | Họp 10周年 出展 và 集客: 50 từ + kính ngữ (ご出席)","topic":"Họp 10周年 出展 và 集客","part":2,"len":"3:01"},{"bai":21,"id":"Uy6TrMWxwQM","title":"BJT Bài 21 | Họp chuẩn bị IPO 上場 + 商談: 50 từ + kính ngữ (ご承認)","topic":"Họp chuẩn bị IPO 上場 + 商談","part":3,"len":"2:56"},{"bai":22,"id":"DDPpuSyRa6k","title":"BJT Bài 22 | Họp 新卒採用 thời 人手不足: 50 từ + kính ngữ (ご判断)","topic":"Họp 新卒採用 thời 人手不足","part":3,"len":"3:15"},{"bai":23,"id":"kxOLQT870qk","title":"BJT Bài 23 | Họp 発売 + 価格据え置き: 50 từ + kính ngữ (お使いになる)","topic":"Họp 発売 + 価格据え置き","part":3,"len":"3:14"},{"bai":24,"id":"fBgi4eOekcc","title":"BJT Bài 24 | Họp セキュリティー thời 高齢化: 50 từ + kính ngữ (ご来場)","topic":"Họp セキュリティー thời 高齢化","part":3,"len":"3:09"},{"bai":25,"id":"HqAUxPKbk9s","title":"BJT Bài 25 | Họp 全国発売 hàng 新素材: 50 từ + kính ngữ (ご笑納)","topic":"Họp 全国発売 hàng 新素材","part":3,"len":"2:56"},{"bai":26,"id":"0mKcZquXq_w","title":"BJT Bài 26 | Họp 在庫 ứ đọng + 棚卸し thời 円安: 50 từ + kính ngữ (ご一任)","topic":"Họp 在庫 ứ đọng + 棚卸し thời 円安","part":3,"len":"3:21"},{"bai":27,"id":"RjAbfZqubys","title":"BJT Bài 27 | Họp mở 直営店 + đẩy 通販 thời 円安: 50 từ + kính ngữ (ご愛顧)","topic":"Họp mở 直営店 + đẩy 通販 thời 円安","part":3,"len":"3:33"},{"bai":28,"id":"dl8UtVR6Zas","title":"BJT Bài 28 | Họp ra mắt hàng 詰め替え thời 人手不足: 50 từ + kính ngữ (ご一考)","topic":"Họp ra mắt hàng 詰め替え thời 人手不足","part":3,"len":"3:24"},{"bai":29,"id":"8GwT-zje0fA","title":"BJT Bài 29 | Họp 新規出店 + 店頭デモ thời デフレ: 50 từ + kính ngữ (ご同行)","topic":"Họp 新規出店 + 店頭デモ thời デフレ","part":3,"len":"3:03"},{"bai":30,"id":"PCCcnnUT410","title":"BJT Bài 30 | Họp ra mắt đèn LED mới + 店頭 và 特典: 50 từ + kính ngữ (お読みになる)","topic":"Họp ra mắt đèn LED mới + 店頭 và 特典","part":3,"len":"3:28"},{"bai":31,"id":"QnW0sK3qlrc","title":"BJT Bài 31 | Họp mở showroom 都心 thời 内需 yếu: 50 từ + kính ngữ (ご参照)","topic":"Họp mở showroom 都心 thời 内需 yếu","part":4,"len":"3:32"},{"bai":32,"id":"IvESjWh4G7I","title":"BJT Bài 32 | Họp giá dự thầu 入札 thời 原価高騰: 50 từ + kính ngữ (ご精査)","topic":"Họp giá dự thầu 入札 thời 原価高騰","part":4,"len":"3:14"},{"bai":33,"id":"q4VzKJYl19Q","title":"Từ vựng BJT Bài 33 | Tiếng Nhật thương mại – họp kế hoạch 新年度 – 50 từ + kính ngữ","topic":"Họp kế hoạch 新年度","part":4,"len":"3:26"},{"bai":34,"id":"g_HeGtgRNhc","title":"Từ vựng BJT Bài 34 | Tiếng Nhật thương mại – họp ra mắt nguồn dự phòng 停電 – 50 từ + kính ngữ","topic":"Họp ra mắt nguồn dự phòng 停電","part":4,"len":"3:37"},{"bai":35,"id":"sPR6VNwjleQ","title":"Từ vựng BJT Bài 35 | Tiếng Nhật thương mại – họp khuyến mãi mùa thu 販促 – 50 từ + kính ngữ","topic":"Họp khuyến mãi mùa thu 販促","part":4,"len":"3:42"},{"bai":36,"id":"xWJXHa4hIh0","title":"Từ vựng BJT Bài 36 | Tiếng Nhật thương mại – họp gian hàng hội chợ 見本市 – 50 từ + kính ngữ","topic":"Họp gian hàng hội chợ 見本市","part":4,"len":"3:58"},{"bai":37,"id":"kjaqwClza0A","title":"Từ vựng BJT Bài 37 | Tiếng Nhật thương mại – họp dự án DX bị đình trệ – 50 từ + kính ngữ","topic":"Họp dự án DX bị đình trệ","part":4,"len":"3:49"},{"bai":38,"id":"uEsDjnv8uio","title":"Từ vựng BJT Bài 38 | Tiếng Nhật thương mại – họp xử lý trả hàng 返品 – 50 từ + kính ngữ","topic":"Họp xử lý trả hàng 返品","part":4,"len":"4:00"},{"bai":39,"id":"SXe56adFuiY","title":"Từ vựng BJT Bài 39 | Tiếng Nhật thương mại – họp đẩy sớm vận hành 本番稼働 – 50 từ + kính ngữ","topic":"Họp đẩy sớm vận hành 本番稼働","part":4,"len":"3:39"}]};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem('bjtvocab:'+k); return v?JSON.parse(v):d; }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem('bjtvocab:'+k, JSON.stringify(v)); }catch(e){} }
+};
+const V = LISTEN.videos;
+let listened = store.get('listened', {});
+let part = 'all';
+const fromHash = () => { const m=location.hash.match(/bai-(\d+)/); return m ? V.findIndex(v=>v.bai===+m[1]) : -1; };
+let cur = fromHash(); if(cur<0) cur = Math.max(0, V.findIndex(v=>v.bai===store.get('listenLast', V[0].bai)));
+
+function play(i, opened){
+  cur = i; const v = V[i];
+  // no autoplay and the regular youtube.com embed, so the viewer's own play press counts as a channel view
+  $('#frame').innerHTML = `<iframe src="https://www.youtube.com/embed/${v.id}?rel=0" title="${esc(v.title)}" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  $('#pBai').textContent = `BÀI ${v.bai} · PHẦN ${v.part}${v.len?' · '+v.len:''}`;
+  $('#pTitle').textContent = v.topic;
+  $('#pYt').innerHTML = `<a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">Mở trên YouTube ↗</a>`;
+  $('#quizBtn').href = `tu-vung.html?nhom=${v.bai}`;
+  $('#prevBtn').disabled = i===0; $('#nextBtn').disabled = i===V.length-1;
+  if(opened){ listened[v.bai]=Date.now(); store.set('listened', listened); }
+  store.set('listenLast', v.bai);
+  history.replaceState(null, '', '#bai-'+v.bai);
+  renderGrid();
+}
+function renderGrid(){
+  const parts = [...new Set(V.map(v=>v.part))];
+  $('#parts').innerHTML = [['all','Tất cả'],...parts.map(p=>[String(p),'Phần '+p])].map(([k,l])=>`<button class="pill ${part===k?'on':''}" data-part="${k}">${l}</button>`).join('');
+  $('#grid').innerHTML = V.map((v,i)=>({v,i})).filter(({v})=>part==='all'||String(v.part)===part).map(({v,i})=>`
+    <button class="vcard ${i===cur?'cur':''}" data-i="${i}">
+      <div class="thumb"><img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="">${v.len?`<span class="len">${v.len}</span>`:''}${listened[v.bai]?'<span class="done">Đã nghe</span>':''}</div>
+      <div class="vbody"><b>Bài ${v.bai}</b><div>${esc(v.topic)}</div></div>
+    </button>`).join('');
+}
+document.addEventListener('click', e=>{
+  const t=e.target.closest('[data-i],[data-part]'); if(!t) return;
+  if(t.dataset.part){ part=t.dataset.part; renderGrid(); return; }
+  play(+t.dataset.i, true); window.scrollTo({top:0, behavior:'smooth'});
+});
+$('#prevBtn').onclick=()=>{ if(cur>0) play(cur-1, true); };
+$('#nextBtn').onclick=()=>{ if(cur<V.length-1) play(cur+1, true); };
+window.addEventListener('hashchange',()=>{ const i=fromHash(); if(i>=0 && i!==cur) play(i, false); });
+$('#themeBtn').onclick=()=>{
+  const r=document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme = dark?'light':'dark'; store.set('theme', r.dataset.theme);
+};
+play(cur, false);
+</script>
+</body>
+</html>

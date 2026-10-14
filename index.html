@@ -241,9 +241,12 @@ mark{background:linear-gradient(transparent 62%,var(--hl) 62%);color:inherit;fon
 .tile .prog .bar i{display:block;height:100%;background:var(--accent)}
 .tile .prog span{font-size:12px;color:var(--muted)}
 .tile .arrow{font-size:20px;color:var(--accent)}
-/* tạm ẩn ngữ pháp và kính ngữ; xoá dòng dưới để hiện lại */
-.tile[href="ngu-phap.html"],.tile[href="kinh-ngu.html"]{display:none}
-@media (max-width:640px){ .tile{grid-template-columns:56px 1fr;padding:14px} .tile .kj{width:56px;height:56px;font-size:21px} .tile .arrow{display:none} .hero h2{font-size:23px} }
+/* phần chưa mở: thẻ có class "soon" hiện mờ, nhãn 更新中, không bấm được. Mở phần nào thì đổi <div class="tile soon"> thành <a class="tile" href="..."> */
+.tile.soon{opacity:.62;cursor:default;box-shadow:none}
+.tile.soon:hover{border-color:var(--line-2)}
+.tile.soon .kj{background:var(--line-2);color:var(--muted)}
+.soonbadge{font-family:"Noto Sans JP",sans-serif;font-size:12.5px;font-weight:700;color:var(--ink-2);background:var(--line-2);border:1px solid var(--line);padding:4px 10px;border-radius:6px;white-space:nowrap}
+@media (max-width:640px){ .tile{grid-template-columns:56px 1fr;padding:14px} .tile.soon{grid-template-columns:56px 1fr auto} .tile .kj{width:56px;height:56px;font-size:21px} .tile .arrow{display:none} .hero h2{font-size:23px} }
 </style>
 <script>try{const t=localStorage.getItem('bjtvocab:theme');if(t)document.documentElement.dataset.theme=JSON.parse(t);}catch(e){}</script>
 </head>
@@ -255,34 +258,38 @@ mark{background:linear-gradient(transparent 62%,var(--hl) 62%);color:inherit;fon
   <button class="iconbtn" id="themeBtn" title="Đổi giao diện sáng/tối">◐</button>
 </header>
 <main class="wrap"><div class="col">
-  <div class="hero"><h2>Hôm nay luyện phần nào?</h2><p>Mỗi lượt tối đa 20 câu trắc nghiệm, có giọng đọc Tokyo.</p></div>
+  <div class="hero"><h2>Hôm nay luyện phần nào?</h2><p>Nghe hội thoại theo bài, rồi ôn bằng trắc nghiệm có giọng đọc Tokyo.</p></div>
   <div class="tiles">
     <a class="tile" href="tu-vung.html" data-prefix="vocab" data-total="2217">
       <div class="kj">語彙</div>
       <div><h3>Từ vựng</h3><p>2217 từ BJT trong 45 bài: cách đọc, ý nghĩa, chọn từ, điền vào câu.</p>
         <div class="prog"><div class="bar"><i></i></div><span></span></div></div>
       <div class="arrow">→</div></a>
-    <a class="tile" href="ngu-phap.html" data-prefix="grammar" data-total="117">
+    <a class="tile" href="luyen-nghe.html" data-prefix="listen" data-total="39">
+      <div class="kj">聴解</div>
+      <div><h3>Luyện nghe</h3><p>39 hội thoại họp công sở theo từng bài, mỗi bài 50 từ vựng kèm kính ngữ. Video từ kênh nihongo-rakuraku.</p>
+        <div class="prog"><div class="bar"><i></i></div><span></span></div></div>
+      <div class="arrow">→</div></a>
+    <div class="tile soon" data-page="ngu-phap.html" aria-disabled="true">
       <div class="kj">文法</div>
-      <div><h3>Ngữ pháp</h3><p>117 mẫu ngữ pháp J3~J2 thường gặp, điền mẫu vào hội thoại công sở.</p>
-        <div class="prog"><div class="bar"><i></i></div><span></span></div></div>
-      <div class="arrow">→</div></a>
-    <a class="tile" href="kinh-ngu.html" data-prefix="keigo" data-total="58">
+      <div><h3>Ngữ pháp</h3><p>117 mẫu ngữ pháp J3~J2 thường gặp, điền mẫu vào hội thoại công sở.</p></div>
+      <div class="soonbadge">更新中</div></div>
+    <div class="tile soon" data-page="kinh-ngu.html" aria-disabled="true">
       <div class="kj">敬語</div>
-      <div><h3>Kính ngữ</h3><p>Tôn kính ngữ, khiêm nhường ngữ, từ ngữ công sở và các lỗi kính ngữ hay gặp.</p>
-        <div class="prog"><div class="bar"><i></i></div><span></span></div></div>
-      <div class="arrow">→</div></a>
+      <div><h3>Kính ngữ</h3><p>Tôn kính ngữ, khiêm nhường ngữ, từ ngữ công sở và các lỗi kính ngữ hay gặp.</p></div>
+      <div class="soonbadge">更新中</div></div>
   </div>
 </div></main>
 <script>
 let stats={}; try{ stats=JSON.parse(localStorage.getItem('bjtvocab:stats')||'{}'); }catch(e){}
 const kindOf = id => id.startsWith('g') ? 'grammar' : id.startsWith('k') ? 'keigo' : 'vocab';
-const known = {vocab:0, grammar:0, keigo:0};
+const known = {vocab:0, grammar:0, keigo:0, listen:0};
 for(const [id,s] of Object.entries(stats)) if(s.c>0) known[kindOf(id)]++;
-document.querySelectorAll('.tile').forEach(c=>{
+try{ known.listen = Object.keys(JSON.parse(localStorage.getItem('bjtvocab:listened')||'{}')).length; }catch(e){}
+document.querySelectorAll('.tile[data-prefix]').forEach(c=>{
   const k=c.dataset.prefix, tot=+c.dataset.total;
   c.querySelector('.bar i').style.width=(known[k]/tot*100)+'%';
-  c.querySelector('.prog span').textContent=`Đã đúng ${known[k]}/${tot}`;
+  c.querySelector('.prog span').textContent=`${k==='listen'?'Đã nghe':'Đã đúng'} ${known[k]}/${tot}`;
 });
 document.getElementById('themeBtn').onclick=()=>{
   const r=document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
